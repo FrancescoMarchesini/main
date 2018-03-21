@@ -53,6 +53,9 @@ void glxDisplay::framebuffer_size_callback(GLFWwindow *window, int width, int he
 
 bool glxDisplay::initGL()
 {
+    //gestiamo i possibili errori prima di tutto
+    glfwSetErrorCallback(error_callback);
+
     //init glew
     glfwMakeContextCurrent(mWindow);
 
@@ -151,6 +154,11 @@ void glxDisplay::draw()
         glfwWaitEvents();
     }
     glfwTerminate();
+}
+
+void glxDisplay::error_callback(int error, const char *description)
+{
+    printf("%s ORRORE : %s \n", LOG_GLFW, description);
 }
 
 GLFWcursor *glxDisplay::initCostumCursor()

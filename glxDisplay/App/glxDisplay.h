@@ -50,6 +50,14 @@ private:
     ///NOTA CHE QUESTE FUNZIONI SONO STATICHE PERCHE QUANDO VENGONO CHIAMATE DALLE
     ///FUNZIONI CALL BACK DI GLFW SE NON STATICHE NON COMPILA E DA IL SEGUENTE ERRORE :
     ///"invalid use of non-static member function"
+
+    /**
+     * @brief error_callback funzione per maneggiare gli errori, spero di no
+     * @param error
+     * @param description
+     */
+    static void error_callback(int error, const char* description);
+
     /**
      * @brief framebuffer_size_callback funzione di callback per il resize del viewport, ovvero lo spazio di disegno
      * @param window oggetto finestra sul quale applicare il resize
