@@ -40,10 +40,23 @@ bool glxDisplay::initWindow()
     return true;
 }
 
+//ogni qualvolta che c'è un resize della windows questa funzione viene eseguita
+void glxDisplay::framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
+    //RICORDARSI CHE LE VARIBILE DELLE mWidth ED mHeight NON VENGONO AGGIORNATE
+    //NON SO NEANCHE SE PUO' ESSERE UN PROBLEMA
+    //mWidth = width;
+    //mHeight = height;
+    glViewport(0, 0, width, height );
+    printf("%s Resize view porta avvenuto %d X %d \n", LOG_GLFW, width, height);
+}
+
 bool glxDisplay::initGL()
 {
     //init glew
     glfwMakeContextCurrent(mWindow);
+    //funzione call back per resize windows
+    glfwSetFramebufferSizeCallback(mWindow, glxDisplay::framebuffer_size_callback);
     glewExperimental == true;
     if(glewInit() != GLEW_OK)
     {
@@ -79,6 +92,7 @@ glxDisplay* glxDisplay::create()
     return vp;
 }
 
+
 void glxDisplay::draw()
 {
     /**
@@ -89,11 +103,11 @@ void glxDisplay::draw()
      */
     glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
-    glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     //main loop per diseganre
     do
     {
         //pulisci lo schermo ad ogni loop
+        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
         glClear( GL_COLOR_BUFFER_BIT );
 
         //swap del buffer
@@ -101,4 +115,5 @@ void glxDisplay::draw()
         glfwPollEvents();
     }
     while(glfwGetKey(mWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(mWindow) == 0);
+    glfwTerminate();
 }

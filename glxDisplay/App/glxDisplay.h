@@ -39,6 +39,14 @@ private:
      */
     bool initGL();
 
+    /**
+     * @brief framebuffer_size_callback funzione di callback per il resize del viewport, ovvero lo spazio di disegno
+     * @param window oggetto finestra sul quale applicare il resize
+     * @param width largezza viewport
+     * @param height altezza view port
+     */
+    static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
     //oggetto finistra
     GLFWwindow* mWindow;
 
