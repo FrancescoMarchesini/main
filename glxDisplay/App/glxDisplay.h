@@ -54,8 +54,13 @@ private:
     GLFWwindow* mWindow;
 
     //variabile per la finestra
-    uint32_t mWidth;
-    uint32_t mHeight;
+    int mWidth;
+    int mHeight;
+
+    float r;
+    float g;
+    float b;
+    float a;
 };
 
 #endif

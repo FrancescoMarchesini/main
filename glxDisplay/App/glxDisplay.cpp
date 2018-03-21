@@ -6,6 +6,10 @@ glxDisplay::glxDisplay()
     mWindow = NULL;
     mWidth = 512;
     mHeight = 512;
+    r = 0.f;
+    g = 0.f;
+    b = 0.4f;
+    a = 0.f;
 }
 
 glxDisplay::~glxDisplay()
@@ -110,7 +114,7 @@ void glxDisplay::draw()
         processInput(mWindow);
 
         //pulisci lo schermo ad ogni loop
-        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+        glClearColor(r, g, b, a);
         glClear( GL_COLOR_BUFFER_BIT );
 
         //swap del buffer
@@ -127,4 +131,39 @@ void glxDisplay::processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
         printf("%s Chiuso la finestra \n", LOG_GLFW);
     }
+
+    //restore window size
+    if(glfwGetKey(mWindow, GLFW_KEY_U) == GLFW_PRESS)
+    {
+        printf("%s Tasto U : restore default size %d X %d \n", LOG_GLFW, mWidth, mHeight);
+        glfwRestoreWindow(mWindow);
+    }
+
+    //massimizza la finistra
+    if(glfwGetKey(mWindow, GLFW_KEY_I) == GLFW_PRESS)
+    {
+        printf("%s Tasto I : massimizzato finestra \n", LOG_GLFW);
+        glfwMaximizeWindow(mWindow);
+        //VEDERE COME OTTENERE LE NUOVE DIMESIONSIONI
+    }
+
+    //minimizza la finestra
+    if(glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_PRESS)
+    {
+        //ATTENZIONE SE LA FINISTRA VIENE MINIMIZZATA SCOMPARE E
+        //NON SI PUO FAR NIENTE A PARTE CHE CHIUDERE IL TODOS
+        printf("%s Tasto O : minimizza finistra \n", LOG_GLFW);
+        glfwHideWindow(mWindow);
+    }
+
+    //mostra la finistra
+    if(glfwGetKey(mWindow, GLFW_KEY_P) == GLFW_PRESS)
+    {
+        //DOVREBBE VISUALIZZARE LA FINISTRA QUANDO E MINIMIZZATA
+        //MA NON ESSENDOCI PIU LA FINISTRA NON CE IL CONSTESTO NEL
+        //QUALE SCHIACCIARE IL BOTTONE !!! :(
+        printf("%s Tasto P : mostra finestra \n", LOG_GLFW);
+        glfwShowWindow(mWindow);
+    }
+
 }
