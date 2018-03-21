@@ -48,7 +48,7 @@ void glxDisplay::framebuffer_size_callback(GLFWwindow *window, int width, int he
     //mWidth = width;
     //mHeight = height;
     glViewport(0, 0, width, height );
-    printf("%s Resize view porta avvenuto %d X %d \n", LOG_GLFW, width, height);
+    printf("%s Resize viewport avvenuto %d X %d \n", LOG_GLFW, width, height);
 }
 
 bool glxDisplay::initGL()
@@ -104,8 +104,11 @@ void glxDisplay::draw()
     glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
     //main loop per diseganre
-    do
+    while(!glfwWindowShouldClose(mWindow))
     {
+        //porcesso gli input
+        processInput(mWindow);
+
         //pulisci lo schermo ad ogni loop
         glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
         glClear( GL_COLOR_BUFFER_BIT );
@@ -114,6 +117,14 @@ void glxDisplay::draw()
         glfwSwapBuffers(mWindow);
         glfwPollEvents();
     }
-    while(glfwGetKey(mWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(mWindow) == 0);
     glfwTerminate();
+}
+
+void glxDisplay::processInput(GLFWwindow *window)
+{
+    if(glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, true);
+        printf("%s Chiuso la finestra \n", LOG_GLFW);
+    }
 }
