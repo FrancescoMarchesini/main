@@ -12,41 +12,32 @@ class glxDisplay
 {
 public:
     /**
-     * @brief create
+     * @brief create funzione statica per creare l'instanza della classe
      * @return
      */
     static glxDisplay* create();
 
-    /**
-     * @brief create
-     * @return
-     */
-    //~glxDisplay();
+    ~glxDisplay();
 
     /**
-     * @brief setTitle
-     * @param str
-     * funzione per settare il titolo della finestra
+     * @brief draw funzione con main loop per disegnare
      */
-    void setTitle(const char *str);
-    void setSize(uint32_t widht, uint32_t height);
+    void draw();
 
 private:
     glxDisplay();
 
     /**
-     * @brief initWindow
-     * funzione per fare l'init della finestra glfw
+     * @brief initWindow init della finestra glfw
      * @return true o false
      */
     bool initWindow();
 
     /**
-     * @brief iniGL
-     * inizializzazione di glew.h
+     * @brief iniGLinizializzazione init di glew.h
      * @return true o false
      */
-    bool iniGL();
+    bool initGL();
 
     //oggetto finistra
     GLFWwindow* mWindow;

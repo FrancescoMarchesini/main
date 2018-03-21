@@ -3,7 +3,7 @@
 
 int main(int argv, char*argc[])
 {
-    std::cout<<"bella li"<<std::endl;
     glxDisplay* win = glxDisplay::create();
+    win->draw();
     return 0;
 }
