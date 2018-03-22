@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdlib.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -103,6 +103,16 @@ private:
      * @param codepoint il tast premuto è dato sotto forma unicode standart
      */
     static void character_callback(GLFWwindow* window, unsigned int codepoint);
+
+    /**
+     * @brief key_callback funzione che notifica quando un tasto è premuto rilasciato ripetuto
+     * @param window finestra nella quale si opera
+     * @param key   GLFW_KEY premuta
+     * @param scancode
+     * @param action GLFW_PRESS, GLFW_REPEAT o GLFW_RELEASE
+     * @param mods tasti modali GLFW_KEY_ALT etc...
+     */
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 
     /**

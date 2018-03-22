@@ -65,6 +65,7 @@ bool glxDisplay::initGL()
 
     //funzione call back per resize windows
     glfwSetFramebufferSizeCallback(mWindow, glxDisplay::framebuffer_size_callback);
+
     //funzione call_back per ottenere cordinate del mouse all'interno dello schermo
     glfwSetCursorPosCallback(mWindow, glxDisplay::mouse_callback);
     //funzione call_back per ottenere lo scrollo della rotella
@@ -73,6 +74,9 @@ bool glxDisplay::initGL()
     glfwSetCursorEnterCallback(mWindow, cursor_enter_call_back);
     //funzione callback per tasti mouse
     glfwSetMouseButtonCallback(mWindow, mouse_button_callback);
+
+    //funzione callback per input tastiera
+    glfwSetKeyCallback(mWindow, glxDisplay::key_callback);
     //funzione callback per ottenere lo stream input
     glfwSetCharCallback(mWindow, character_callback);
 
@@ -138,8 +142,6 @@ void glxDisplay::draw()
     //main loop per diseganre
     while(!glfwWindowShouldClose(mWindow))
     {
-        //porcesso gli input
-        processInput(mWindow);
 
         //pulisci lo schermo ad ogni loop
         glClearColor(0.f, 0.f, 0.4f, 0.f);
@@ -180,12 +182,13 @@ void glxDisplay::mouse_callback(GLFWwindow *window, double xpos, double ypos)
 
 void glxDisplay::scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
 {
-    printf("%s scroll : xpos = %f ypos = %f\n", LOG_GLFW, xoffset, yoffset);
+    printf("%s scroll : xpos = %0.3f ypos = %0.3f\n", LOG_GLFW, xoffset, yoffset);
 }
 
 void glxDisplay::cursor_enter_call_back(GLFWwindow *window, int entered)
 {
-    if (entered)
+
+    if(entered)
     {
         printf("%s tu sei dentro \n", LOG_GLFW);
     }
@@ -197,49 +200,79 @@ void glxDisplay::cursor_enter_call_back(GLFWwindow *window, int entered)
 
 void glxDisplay::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-         printf("%s Tasto destro mouse \n", LOG_GLFW);
-    if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS)
-         printf("%s Tasto centrale mouse \n", LOG_GLFW);
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-         printf("%s Tasto sinistro mouse \n", LOG_GLFW);
+    if(action != GLFW_PRESS)
+        return;
+
+    switch(button)
+    {
+        case GLFW_MOUSE_BUTTON_LEFT:
+        {
+             printf("%s Tasto sinistro mouse \n", LOG_GLFW);
+             break;
+        }
+        case GLFW_MOUSE_BUTTON_MIDDLE:
+        {
+            printf("%s Tasto centrale mouse \n", LOG_GLFW);
+            break;
+        }
+        case GLFW_MOUSE_BUTTON_RIGHT:
+        {
+            printf("%s Tasto destro mouse \n", LOG_GLFW);
+            break;
+        }
+    }
 }
 
 void glxDisplay::character_callback(GLFWwindow* window, unsigned int codepoint)
 {
     printf("%s tasto unicode : %d \n", LOG_GLFW, codepoint);
+    static char result[6 + 1];
+
+    int length = wctomb(result, codepoint);
+    if (length == -1)
+        length = 0;
+
+    result[length] = '\0';
+    printf("%s char string : %s \n", LOG_GLFW, result);
 }
 
-///TUTTA DA METTERE A POSTO CON LE STRUTTURE SWITCH
-void glxDisplay::processInput(GLFWwindow *window)
+void glxDisplay::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    if(glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    //fai l'azione solo quando il tasto è premuto
+    if(action != GLFW_PRESS)
+        return;
+
+    switch(key)
     {
-        glfwSetWindowShouldClose(window, true);
-        printf("%s Chiuso la finestra \n", LOG_GLFW);
+        case GLFW_KEY_ESCAPE:
+        {
+             glfwSetWindowShouldClose(window, true);
+             printf("%s Chiuso la finestra \n", LOG_GLFW);
+        }
+
+        case GLFW_KEY_F10:
+        {
+             glfwRestoreWindow(window);
+             int w, h = 0;
+             glfwGetWindowSize(window, &w, &h);
+             printf("%s Tasto U : restore default size %d X %d \n", LOG_GLFW, w, h);
+             break;
+        }
+
+        case GLFW_KEY_F11:
+        {
+             glfwMaximizeWindow(window);
+             int w, h = 0;
+             glfwGetWindowSize(window, &w, &h);
+             printf("%s F11 : massimizzato la finestra %d X %d \n", LOG_GLFW, w, h);
+             break;
+        }
+
+        case GLFW_KEY_F12:
+        {
+             glfwIconifyWindow(window);
+             printf("%s Tasto O : iconizzo la finistra \n", LOG_GLFW);
+             break;
+        }
     }
-
-    //restore window size
-    if(glfwGetKey(mWindow, GLFW_KEY_U) == GLFW_PRESS)
-    {
-        printf("%s Tasto U : restore default size %d X %d \n", LOG_GLFW, mWidth, mHeight);
-        glfwRestoreWindow(mWindow);
-    }
-
-    //massimizza la finistra
-    if(glfwGetKey(mWindow, GLFW_KEY_I) == GLFW_PRESS)
-    {
-        printf("%s Tasto I : massimizzato finestra \n", LOG_GLFW);
-        glfwMaximizeWindow(mWindow);
-        //VEDERE COME OTTENERE LE NUOVE DIMESIONSIONI
-    }
-
-    //iconizza la finestra
-    if(glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_PRESS)
-    {
-        printf("%s Tasto O : iconizzo la finistra \n", LOG_GLFW);
-        glfwIconifyWindow(mWindow);
-    }
-
-
 }
