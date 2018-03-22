@@ -210,6 +210,7 @@ void glxDisplay::character_callback(GLFWwindow* window, unsigned int codepoint)
     printf("%s tasto unicode : %d \n", LOG_GLFW, codepoint);
 }
 
+///TUTTA DA METTERE A POSTO CON LE STRUTTURE SWITCH
 void glxDisplay::processInput(GLFWwindow *window)
 {
     if(glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -233,23 +234,12 @@ void glxDisplay::processInput(GLFWwindow *window)
         //VEDERE COME OTTENERE LE NUOVE DIMESIONSIONI
     }
 
-    //minimizza la finestra
+    //iconizza la finestra
     if(glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_PRESS)
     {
-        //ATTENZIONE SE LA FINISTRA VIENE MINIMIZZATA SCOMPARE E
-        //NON SI PUO FAR NIENTE A PARTE CHE CHIUDERE IL TODOS
-        printf("%s Tasto O : minimizza finistra \n", LOG_GLFW);
-        glfwHideWindow(mWindow);
+        printf("%s Tasto O : iconizzo la finistra \n", LOG_GLFW);
+        glfwIconifyWindow(mWindow);
     }
 
-    //mostra la finistra
-    if(glfwGetKey(mWindow, GLFW_KEY_P) == GLFW_PRESS)
-    {
-        //DOVREBBE VISUALIZZARE LA FINISTRA QUANDO E MINIMIZZATA
-        //MA NON ESSENDOCI PIU LA FINISTRA NON CE IL CONSTESTO NEL
-        //QUALE SCHIACCIARE IL BOTTONE !!! :(
-        printf("%s Tasto P : mostra finestra \n", LOG_GLFW);
-        glfwShowWindow(mWindow);
-    }
 
 }
