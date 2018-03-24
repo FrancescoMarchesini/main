@@ -19,7 +19,9 @@ add_executable(${PROJECT_NAME}
 	App/glxDisplay.h
 	App/loadImage.h
 	App/loadImage.cpp
-	App/data/shader/*)
+	data/shader/text2d.vertexshader
+	data/shader/text2d.fragmentshader
+)
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
