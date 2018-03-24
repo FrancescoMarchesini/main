@@ -88,7 +88,7 @@ bool glxDisplay::initGL()
      * args 2 : Cosa ascoltare in questo il mouse
      * args 3 : come ascolotare
      */
-    glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    //glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     /**
      * @brief glfwSetInputMode listener sugli eventi
@@ -96,9 +96,9 @@ bool glxDisplay::initGL()
      * args 2 : Cosa ascoltare in questo caso i tasti premuti
      * args 3 : alla premitura di un tasto il valore di ritorno è GLFW_PRESS
      */
-    glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GL_TRUE);
+    //glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
-    glfwSetInputMode(mWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
+    //glfwSetInputMode(mWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
     /////////////////////////////////////////////////////////////
 
     glewExperimental == true;

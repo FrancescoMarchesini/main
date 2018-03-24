@@ -115,12 +115,6 @@ private:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 
-    /**
-     * @brief processInput funzione per mettersi in ascolto degli input da tastiera sulla finestra
-     * @param window oggetto finestra
-     */
-    void processInput(GLFWwindow* window);
-
     //oggetto finistra
     GLFWwindow* mWindow;
 
