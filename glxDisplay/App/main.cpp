@@ -9,6 +9,10 @@
 int main(int argv, char*argc[])
 {
     GLuint image = loadDDS("Holstein.DDS");
+    if(!image)
+        exit(EXIT_FAILURE);
+
+
     glxDisplay* win = glxDisplay::create();
     win->draw();
     delete win;

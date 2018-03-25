@@ -12,4 +12,6 @@
  */
 GLuint loadDDS(const char* imagePath);
 
+GLuint createDDSTexture(unsigned int format,  unsigned char * buffer, unsigned int mipMapCount, unsigned int width, unsigned int height);
+
 #endif
