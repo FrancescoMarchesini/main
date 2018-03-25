@@ -41,13 +41,13 @@ class Shader
         bool init(const char * vertexPath, const char* fragmentPath, const char* geomtryPath = nullptr);
         void checkCompileErrors(GLuint shader, std::string type);
 
-    //varibili della classe
-    unsigned int ID;
-    std::string vertexCode;
-    std::string fragCode;
-    std::string geometryCode;
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
-    std::ifstream gShaderFile;
+        //varibili della classe
+        unsigned int ID;
+        std::string vertexCode;
+        std::string fragCode;
+        std::string geometryCode;
+        std::ifstream vShaderFile;
+        std::ifstream fShaderFile;
+        std::ifstream gShaderFile;
 };
 #endif
