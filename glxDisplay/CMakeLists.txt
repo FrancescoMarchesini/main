@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME}
         App/Quad.cpp
         data/shader/text2d.vertexshader
 	data/shader/text2d.fragmentshader
+        data/shader/quad.vertexshader
+        data/shader/quad.fragmentshader
         common/loadImageOnTexture.h
         common/loadImageOnTexture.cpp
         common/shader.h
