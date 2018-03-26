@@ -38,7 +38,7 @@ void Shader::checkCompileErrors(GLuint shader, std::__cxx11::string type)
 
 bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *geomtryPath)
 {
-    printf("%s Provo a caricare gli shader\n", LOG_SHADER);
+    printf("%sProvo a caricare gli shader\n", LOG_SHADER);
     //apro il file e nel durante vedo se ci sono errori
     //failbit : errori logici di input / ouput
     //badbit  : Read/write errori su input/uput operations
@@ -73,30 +73,30 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
     }
     catch(std::ifstream::failure e)
     {
-        printf("%s FALLITO A LEGGERE UNO DEI FILE ERRORE : %s\n", LOG_SHADER, e.what());
+        printf("%sFALLITO A LEGGERE UNO DEI FILE ERRORE : %s\n", LOG_SHADER, e.what());
     }
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
-    printf("%s Shader caricati correttamente\n", LOG_SHADER);
+    printf("%sShader caricati correttamente\n", LOG_SHADER);
 
-    printf("%s Linko gli Shader\n", LOG_SHADER);
+    printf("%sLinko gli Shader\n", LOG_SHADER);
     unsigned int vertex, fragment;
     int succes;
     char infoLog[512];
 
-    printf("%s Iniziamo con il Vertex Shader :)\n", LOG_SHADER);
+    printf("%sIniziamo con il Vertex Shader :)\n", LOG_SHADER);
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
     checkCompileErrors(vertex, "VERTEX");
 
-    printf("%s Coninuiamo con il Fragment Shader\n", LOG_SHADER);
+    printf("%sConinuiamo con il Fragment Shader\n", LOG_SHADER);
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fShaderCode, NULL);
     glCompileShader(fragment);
     checkCompileErrors(vertex, "FRAGMENT");
 
-     printf("%s Finiamo con il geometry Shader se presente\n", LOG_SHADER);
+     printf("%sFiniamo con il geometry Shader se presente\n", LOG_SHADER);
      unsigned int geometry;
      if(geomtryPath != NULL)
      {
@@ -111,7 +111,7 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
          printf("%s No il geometry non è presetne :( \n", LOG_SHADER);
      }
 
-     printf("%s Attiviamo gli shader \n", LOG_SHADER);
+     printf("%sAttiviamo gli shader \n", LOG_SHADER);
      ID = glCreateProgram();
      glAttachShader(ID, vertex);
      glAttachShader(ID, fragment);
@@ -120,7 +120,7 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
      glLinkProgram(ID);
      checkCompileErrors(ID, "PROGRAM");
 
-     printf("%s Pulisco gli shader che una volta linkati non sono piu necessari\n", LOG_SHADER);
+     printf("%sPulisco gli shader che una volta linkati non sono piu necessari\n", LOG_SHADER);
      glDeleteShader(vertex);
      glDeleteShader(fragment);
      if(geomtryPath != nullptr)
@@ -208,7 +208,6 @@ void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
 {
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
-
 
 void Shader::deleteShader()
 {

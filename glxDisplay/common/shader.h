@@ -10,7 +10,7 @@
 #include <sstream>
 #include <iostream>
 
-#define LOG_SHADER "[LOG_SHADER] "
+#define LOG_SHADER "[LOG_SHADER][INFO] "
 class Shader
 {
     public:
@@ -35,7 +35,7 @@ class Shader
         void setMat3(const std::string &name, const glm::mat3 &mat) const;
         void setMat4(const std::string &name, const glm::mat4 &mat) const;
 
-        void deleteProgram();
+        void deleteShader();
 
     private:
         Shader();

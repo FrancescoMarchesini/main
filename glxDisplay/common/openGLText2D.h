@@ -10,8 +10,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
-#include "common/shader.h"
-#include "common/loadImageOnTexture.h"
+#include "../common/shader.h"
+#include "../common/loadImageOnTexture.h"
 
 #define LOG_TEXT_INFO       "[LOG_TEXT] [INFO]   "
 #define LOG_TEXT_ERRORE     "[LOG_TEXT] [ERRORE] "

@@ -27,7 +27,7 @@ GLuint createDDSTexture(unsigned int format, unsigned char* buffer, unsigned int
 
     //determino la block size in base al formato dell'immagine caricata
     unsigned int blocksize = (format ==  GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
-     printf("[LOG_IMAGE ] block size = %d \n", blocksize);
+    printf("[LOG_IMAGE ] block size = %d \n", blocksize);
     unsigned int offset = 0;
 
     //carico le mimmaps iterando in tutti i livelli delle mipMap per la loro grandezza
@@ -58,7 +58,7 @@ GLuint createDDSTexture(unsigned int format, unsigned char* buffer, unsigned int
 
 GLuint loadDDS(const char* imagePath)
 {
-    printf("[LOG_IMAGE ] carico Font\n");
+    printf("[LOG_IMAGE ] carico  texture per i Font\n");
 
     unsigned char header[124];
 

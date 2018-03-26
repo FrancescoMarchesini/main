@@ -1,4 +1,4 @@
-#include "common/openGLText2D.h"
+#include "../common/openGLText2D.h"
 
 openGLText::~openGLText()
 {
@@ -18,8 +18,8 @@ openGLText::openGLText()
 
 openGLText* openGLText::create(const char *texturePath)
 {
-    openGLText * tex = new openGLText(texturePath);
-    if(!tex)
+    openGLText * tex = new openGLText();
+    if(!tex->init(texturePath))
     {
         printf("%sfallito a creare l'instanza della classe\n", LOG_TEXT_ERRORE);
         delete tex;
@@ -32,7 +32,7 @@ openGLText* openGLText::create(const char *texturePath)
 
 bool openGLText::init(const char *texturePath)
 {
-    //inizializzo la texture
+    printf("%sloadDDStexture\n", LOG_TEXT_INFO);
     textureID = loadDDS(texturePath);
 
     //Initiliazzo il vertex buffer object
@@ -41,10 +41,12 @@ bool openGLText::init(const char *texturePath)
     glGenBuffers(1, &UVBufferID);
 
     //inizializzo gli shader
-    shader = Shader::create("TextVertexShader.vertexshader", "TextVertexShader.fragmentshader" );
+    shader = Shader::create("./data/shader/text2d.vertexshader", "./data/shader/text2d.fragmentshader" );
     if(!shader)
+    {
         printf("%sfallito caricare gli shader\n", LOG_TEXT_ERRORE);
-
+        return NULL;
+    }
     //qui devrei inizializzare lo shader
     //Text2DUniformID = glGetUniformLocation( Text2DShaderID, "myTextureSampler" );
     //ma essendo che c'è la classe lo posso fare prima del draw dell'oggetto
@@ -56,14 +58,14 @@ bool openGLText::drawTexture(const std::vector<vec2> &vertices, const std::vecto
 {
     //bind vertex cordinate
     //Bind del vertex buffer in modalità array: init nel buffer
-    glBindBufferARB(GL_ARRAY_BUFFER_ARB, vertexBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     //allocazione con la relativa grandezza del buffer
-    glBufferDataARB(GL_ARRAY_BUFFER_ARB, vertices.size() * sizeof(glm::vec2), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec2), &vertices[0], GL_STATIC_DRAW);
     //Bind uv cordiante
     //Bind del vertex buffer in modalità array: init nel buffer
-    glBindBufferARB(GL_ARRAY_BUFFER_ARB, UVBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
     //allocazione con la relativa grandezza del buffer
-    glBufferDataARB(GL_ARRAY_BUFFER_ARB, uv_buffer.size() * sizeof(glm::vec2), &uv_buffer[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, uv_buffer.size() * sizeof(glm::vec2), &uv_buffer[0], GL_STATIC_DRAW);
 
     printf("%sCarico e utilizzo lo shader\n", LOG_TEXT_INFO);
     //utilizzo lo shader
@@ -73,13 +75,13 @@ bool openGLText::drawTexture(const std::vector<vec2> &vertices, const std::vecto
     //altrimenti glUniform1i(glGetUniformLocation(ourShader.ID, "myTextureSampler"), 0);
 
     printf("%sSetto gli attributi dei vertici\n", LOG_TEXT_INFO);
-    glEnableVertexArrayAttrib(0);
-    glBindBufferARB(GL_ARRAY_BUFFER_ARB, vertexBufferID);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 
     printf("%sSetto gli attributi dei vertici UV\n", LOG_TEXT_INFO);
-    glEnableVertexArrayAttrib(1);
-    glBindBufferARB(GL_ARRAY_BUFFER_ARB, UVBufferID);
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 
     printf("%sDefinisco i settagggi per disegnare\n", LOG_TEXT_INFO);
@@ -99,7 +101,7 @@ bool openGLText::drawTexture(const std::vector<vec2> &vertices, const std::vecto
 void openGLText::printText(const char *text, int x, int y, int size)
 {
     unsigned int lenght = strlen(text);
-    printf("%slunghezza del testo :%d\n", LOG_TEXT_INFO, d);
+    printf("%slunghezza del testo :%d\n", LOG_TEXT_INFO, lenght);
 
     //un quadrato di 4 vertici contenete la lettera, formato da due triangoli
     std::vector<glm::vec2> vertici;
@@ -129,20 +131,20 @@ void openGLText::printText(const char *text, int x, int y, int size)
 
         //calcolo delle cordinate UV per ogni lettera
         char character = text[i];
-        printf("%smappo in UV la lettera = %s\n", LOG_TEXT_INFO, text[i]);
+        printf("%smappo in UV la lettera = %d\n", LOG_TEXT_INFO, text[i]);
         //character è la rabbresentazione in asci delle lettere A = 65 .. Z = 58
         //tramite il modulo di 16 la A concide con 1 la B con 2 e cosi via sia per la x che y
         //divido per 16 in modo da mappare le cordinate tra [0.0-1.0]
         //in tal modo a partire dalla texture o la posizione dei caratteri ??
         float uv_x = (character%16)/16.0f;
         float uv_y = (character/16)/16.0f;
-        printf("%suv_x = %.3f X uv_y = %.3f %s\n", LOG_TEXT_INFO, uv_x, uv_y);
+        printf("%suv_x = %.3f X uv_y = %.3f\n", LOG_TEXT_INFO, uv_x, uv_y);
 
         //calcolo il triangolo alto a destra nelle cordinate UV
         glm::vec2 uv_alto_sinistra = glm::vec2(uv_x             , uv_y);
         glm::vec2 uv_alto_destra   = glm::vec2(uv_x+1.0f/16.0f  , uv_y);
         glm::vec2 uv_basso_destra  = glm::vec2(uv_x+1.0f/16.0f  , (uv_y + 1.0f/16.0f));
-        glm::vec2 uv_down_sinistra = glm::vec2(uv_x             , (uv_y + 1.0f/16.0f));
+        glm::vec2 uv_basso_sinistra = glm::vec2(uv_x             , (uv_y + 1.0f/16.0f));
 
         //carico i vertici appena creati nel nel vettore triangolo alto destra
         UVs.push_back(uv_alto_sinistra);
@@ -163,9 +165,9 @@ void openGLText::printText(const char *text, int x, int y, int size)
 
 void openGLText::cleanupText2D()
 {
-    printf("%sCacello buffer shader e texture%d\n", LOG_TEXT_INFO);
+    printf("%sCancello buffer shader e texture\n", LOG_TEXT_INFO);
     glDeleteBuffers(1, &vertexBufferID);
     glDeleteBuffers(1, &UVBufferID);
     glDeleteTextures(1,&textureID);
-    shader->deleteProgram();
+    shader->deleteShader();
 }
