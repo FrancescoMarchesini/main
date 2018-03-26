@@ -1,0 +1,24 @@
+//http://renderingpipeline.com/2013/12/glsl-syntax-highlighting-for-opengl-4-4/
+//aggiunge il testo higline a qt
+
+#version 330 core
+
+//il seguente vertex shader prende le cordinate e le mappa tra il range[-1,1][-1,1]
+layout(location = 0) in vec2 vertexPosition_screenspace;
+layout(location = 1) in vec2 vertexUV;
+
+//outputData
+out vec2 UV;
+
+void main()
+{
+    //mappa le cordinate dei vertifice nel clip space
+    //per mappare le carindare di piu dimensione si è usato la grandezza generica 800 X 600
+    //map[0..800][0..600] to [-1..1][-1..1]
+    vec2 vertexPosition_homespace = vertexPosition_screenspace - vec2(400, 300);
+    vertexPosition_homespace /= vec2(400, 300);
+    gl_Position = vec4(vertexPosition_homespace, 0, 1);
+
+    //UV vertex position
+    UV = vertexUV;
+}
