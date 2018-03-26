@@ -18,7 +18,7 @@ add_executable(${PROJECT_NAME}
 	App/glxDisplay.cpp
 	App/glxDisplay.h
         App/Quad.h
-        App/Quad.h
+        App/Quad.cpp
         data/shader/text2d.vertexshader
 	data/shader/text2d.fragmentshader
         common/loadImageOnTexture.h
