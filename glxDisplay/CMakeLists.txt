@@ -17,10 +17,10 @@ add_executable(${PROJECT_NAME}
 	App/main.cpp
 	App/glxDisplay.cpp
 	App/glxDisplay.h
-	App/loadImage.h
-	App/loadImage.cpp
-	data/shader/text2d.vertexshader
+        data/shader/text2d.vertexshader
 	data/shader/text2d.fragmentshader
+        common/loadImageOnTexture.h
+        common/loadImageOnTexture.cpp
         common/shader.h
         common/shader.cpp
         common/openGLText2D.cpp
