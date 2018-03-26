@@ -1,19 +1,19 @@
 #include "shader.h"
-
+#include <iostream>
 Shader::Shader()
 {
-    ID = NULL;
-    vertexCode = NULL;
-    fragCode = NULL;
-    geometryCode = NULL;
-    vShaderFile = NULL;
-    fShaderFile = NULL;
-    gShaderFile = NULL;
+    ID = 0;
+    vertexCode = "";
+    fragmentCode = "";
+    geometryCode = "";
+   // vShaderFile = "";
+   // fShaderFile = "";
+   // gShaderFile = "";
 }
 
 void Shader::checkCompileErrors(GLuint shader, std::__cxx11::string type)
 {
-    GLuint success;
+    GLint success;
     GLchar infoLog[1024];
     if(type != "PROGRAM")
     {
@@ -21,7 +21,7 @@ void Shader::checkCompileErrors(GLuint shader, std::__cxx11::string type)
            if(!success)
            {
                 glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-                printf("&s ERRORE nella compilazione tipo : %s log : %s", LOG_SHADER, type, infoLog);
+                printf("%s ERRORE nella compilazione tipo : %s log : %s", LOG_SHADER, type.c_str(), infoLog);
            }
     }
     else
@@ -30,7 +30,7 @@ void Shader::checkCompileErrors(GLuint shader, std::__cxx11::string type)
         if(!success)
         {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-            printf("&s ERRORE nel link tipo : %s log : %s", LOG_SHADER, type, infoLog);
+            printf("%s ERRORE nel link tipo : %s log : %s", LOG_SHADER, type.c_str(), infoLog);
 
         }
     }
@@ -42,9 +42,9 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
     //apro il file e nel durante vedo se ci sono errori
     //failbit : errori logici di input / ouput
     //badbit  : Read/write errori su input/uput operations
-    vShaderFile.excetions(std::ifstream::failbit || std::ifstream::badbit);
-    fShaderFile.excetions(std::ifstream::failbit || std::ifstream::badbit);
-    gShaderFile.excetions(std::ifstream::failbit || std::ifstream::badbit);
+    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    gShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try
     {
         //apro il file
@@ -56,10 +56,10 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
         fShaderStream << fShaderFile.rdbuf();
         //chiudo i files
         vShaderFile.close();
-        fshaderFile.close();
+        fShaderFile.close();
         //converto lo stream in stringa
-        vertexCode = vShaderFile.str();
-        fragmentCode = fShaderFile.str();
+        vertexCode = vShaderStream.str();
+        fragmentCode = fShaderStream.str();
         //if presente carico il geometry shader
         if(geomtryPath != NULL)
         {
@@ -73,7 +73,7 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
     }
     catch(std::ifstream::failure e)
     {
-        printf("%s FALLITO A LEGGERE UNO DEI FILE ERRORE : %s\n", LOG_SHADER, e);
+        printf("%s FALLITO A LEGGERE UNO DEI FILE ERRORE : %s\n", LOG_SHADER, e.what());
     }
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -100,7 +100,7 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
      unsigned int geometry;
      if(geomtryPath != NULL)
      {
-         const char* gshaderCode = geometry.c_str();
+         const char* gShaderCode = geometryCode.c_str();
          geometry = glCreateShader(GL_GEOMETRY_SHADER);
          glShaderSource(geometry, 1, &gShaderCode, NULL);
          glCompileShader(geometry);
@@ -129,16 +129,17 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
      return true;
 }
 
-Shader* Shader::create(const char * vertexPath, const char* fragmentPath, const char* geomtryPath = nullptr)
+Shader* Shader::create(const char * vertexPath, const char* fragmentPath, const char* geomtryPath)
 {
+    /*
     vShaderFile = vertexPath;
     fShaderFile = fragmentPath;
     if(geomtryPath != nullptr)
         gShaderFile = geomtryPath;
-
+*/
     Shader* sh = new Shader();
 
-    if(!sh->init())
+    if(!sh->init(vertexPath, fragmentPath, geomtryPath))
     {
         printf("%s FALLITO a creare l'instanza dell'oggetto shadere chiudo ed esco\n", LOG_SHADER);
         delete sh;
@@ -146,67 +147,67 @@ Shader* Shader::create(const char * vertexPath, const char* fragmentPath, const 
     }
 }
 
-void use()
+void Shader::use()
 {
     glUseProgram(ID);
 }
 
 // utility uniform functions
-void setBool(const std::string &name, bool value) const
+void Shader::setBool(const std::string &name, bool value) const
 {
     glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
 }
 
-void setInt(const std::string &name, int value) const
+void Shader::setInt(const std::string &name, int value) const
 {
     glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void setFloat(const std::string &name, float value) const
+void Shader::setFloat(const std::string &name, float value) const
 {
     glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void setVec2(const std::string &name, const glm::vec2 &value) const
+void Shader::setVec2(const std::string &name, const glm::vec2 &value) const
 {
     glUniform2fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
 
-void setVec2(const std::string &name, float x, float y) const
+void Shader::setVec2(const std::string &name, float x, float y) const
 {
     glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
 }
 
-void setVec3(const std::string &name, const glm::vec3 &value) const
+void Shader::setVec3(const std::string &name, const glm::vec3 &value) const
 {
     glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
 
-void setVec3(const std::string &name, float x, float y, float z) const
+void Shader::setVec3(const std::string &name, float x, float y, float z) const
 {
     glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
 }
 
-void setVec4(const std::string &name, const glm::vec4 &value) const
+void Shader::setVec4(const std::string &name, const glm::vec4 &value) const
 {
     glUniform4fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
-void setVec4(const std::string &name, float x, float y, float z, float w)
+void Shader::setVec4(const std::string &name, float x, float y, float z, float w)
 {
     glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w);
 }
 
-void setMat2(const std::string &name, const glm::mat2 &mat) const
+void Shader::setMat2(const std::string &name, const glm::mat2 &mat) const
 {
     glUniformMatrix2fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
-void setMat3(const std::string &name, const glm::mat3 &mat) const
+void Shader::setMat3(const std::string &name, const glm::mat3 &mat) const
 {
     glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
-void setMat4(const std::string &name, const glm::mat4 &mat) const
+void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
 {
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }

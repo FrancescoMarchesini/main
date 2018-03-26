@@ -23,7 +23,7 @@ class Shader
 
         //Semplici warp delle funzioni di utility di openGl per settare i parametri degli shader
         //mancano tutti i get value....
-        void setBool(std::string &name, bool value) const;
+        void setBool(const std::string &name, bool value) const;
         void setInt(const std::string &name, int value) const;
         void setFloat(const std::string &name, float value) const;
         void setVec2(const std::string &name, const glm::vec2 &value) const;
@@ -44,7 +44,7 @@ class Shader
         //varibili della classe
         unsigned int ID;
         std::string vertexCode;
-        std::string fragCode;
+        std::string fragmentCode;
         std::string geometryCode;
         std::ifstream vShaderFile;
         std::ifstream fShaderFile;
