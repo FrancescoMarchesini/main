@@ -23,6 +23,8 @@ add_executable(${PROJECT_NAME}
 	data/shader/text2d.fragmentshader
         common/shader.h
         common/shader.cpp
+        common/openGLText2D.cpp
+        common/openGLText2D.h
 )
 
 target_link_libraries(${PROJECT_NAME}
