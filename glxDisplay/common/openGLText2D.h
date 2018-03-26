@@ -16,7 +16,13 @@ using namespace glm;
 class openGLText
 {
 public:
+
     /**
+     * Distruttore un giorno capiremo come usarlo
+     */
+    ~openGLText();
+
+     /**
      * @brief create funzione per crere l'instanza della classe
      * @param texturePath il path alla texture DDS
      * @return il puntarore all'instanza della classe
@@ -56,6 +62,6 @@ private:
     unsigned int Text2DUVBufferID;      //uv buffer
     unsigned int Text2DShaderID;        //shader
     unsigned int Text2DUniformID;       //settaggio dello shader
-}
+};
 
-#endif;
+#endif
