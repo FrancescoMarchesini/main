@@ -139,13 +139,24 @@ glxDisplay* glxDisplay::create()
 
 void glxDisplay::draw()
 {
+
+    myText =  openGLText::create( "./data/image/Holstein.DDS" );
+    if(!myText)
+    {
+        printf("%sfallito a crare l'instanza dell'oggetto testo.\n", LOG_GLFW_ERROR);
+    }
+
     //main loop per diseganre
     while(!glfwWindowShouldClose(mWindow))
     {
 
         //pulisci lo schermo ad ogni loop
         glClearColor(0.f, 0.f, 0.4f, 0.f);
-        glClear( GL_COLOR_BUFFER_BIT );
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        char text[256];
+        sprintf(text,"Bella li inziamo a ragionare");
+        myText->printText(text, 10, 10, 60);
 
         //swap del buffer
         glfwSwapBuffers(mWindow);
@@ -155,6 +166,8 @@ void glxDisplay::draw()
         //aggiorna gli eventi nel mouse solo quando ci sono
         glfwWaitEvents();
     }
+    myText->cleanupText2D();
+
     glfwTerminate();
 }
 

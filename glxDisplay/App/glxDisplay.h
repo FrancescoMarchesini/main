@@ -9,7 +9,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "../common/openGLText2D.h"
+
 #define LOG_GLFW         "[GLFW ]"
+#define LOG_GLFW_ERROR         "[GLFW] [ERRORE] "
 class glxDisplay
 {
 public:
@@ -121,6 +124,8 @@ private:
     //variabile per la finestra
     int mWidth;
     int mHeight;
+
+    openGLText * myText;
 };
 
 #endif
