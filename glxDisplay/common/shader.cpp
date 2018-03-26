@@ -131,12 +131,7 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
 
 Shader* Shader::create(const char * vertexPath, const char* fragmentPath, const char* geomtryPath)
 {
-    /*
-    vShaderFile = vertexPath;
-    fShaderFile = fragmentPath;
-    if(geomtryPath != nullptr)
-        gShaderFile = geomtryPath;
-*/
+
     Shader* sh = new Shader();
 
     if(!sh->init(vertexPath, fragmentPath, geomtryPath))
@@ -145,6 +140,8 @@ Shader* Shader::create(const char * vertexPath, const char* fragmentPath, const 
         delete sh;
         return NULL;
     }
+
+    return sh;
 }
 
 void Shader::use()
