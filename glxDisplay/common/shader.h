@@ -22,7 +22,6 @@ class Shader
         void use();
 
         //Semplici warp delle funzioni di utility di openGl per settare i parametri degli shader
-        //mancano tutti i get value....
         void setBool(const std::string &name, bool value) const;
         void setInt(const std::string &name, int value) const;
         void setFloat(const std::string &name, float value) const;
@@ -35,6 +34,8 @@ class Shader
         void setMat2(const std::string &name, const glm::mat2 &mat) const;
         void setMat3(const std::string &name, const glm::mat3 &mat) const;
         void setMat4(const std::string &name, const glm::mat4 &mat) const;
+
+        void deleteProgram();
 
     private:
         Shader();

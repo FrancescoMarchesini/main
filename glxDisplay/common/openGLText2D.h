@@ -13,6 +13,10 @@ using namespace glm;
 #include "common/shader.h"
 #include "common/loadImageOnTexture.h"
 
+#define LOG_TEXT_INFO       "[LOG_TEXT] [INFO]   "
+#define LOG_TEXT_ERRORE     "[LOG_TEXT] [ERRORE] "
+
+
 class openGLText
 {
 public:
@@ -56,12 +60,20 @@ private:
      */
     bool init(const char* texturePath);
 
+    /**
+     * @brief drawTexture disegna la texture a partire dai dati caricati
+     * @param vertices  vettore con le cordinate delle singole lettere
+     * @param uv_buffer vettore con le cordinate UV delle sinole lettere
+     * @return
+     */
+    bool drawTexture(const std::vector<glm::vec2> & vertices, const std::vector<glm::vec2> & uv_buffer);
+
     //varibili della classe
-    unsigned int Text2DTextureID;       //id della texture
-    unsigned int Text2DVertexBufferID;  //vbo nel quale inserire la texture
-    unsigned int Text2DUVBufferID;      //uv buffer
-    unsigned int Text2DShaderID;        //shader
-    unsigned int Text2DUniformID;       //settaggio dello shader
+    unsigned int textureID;       //id della texture
+    unsigned int vertexBufferID;  //vbo nel quale inserire la texture
+    unsigned int UVBufferID;      //uv buffer
+    Shader* shader;               //shader
+    unsigned int Uniform2DID;       //settaggio dello shader
 };
 
 #endif
