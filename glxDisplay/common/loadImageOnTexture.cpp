@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 #include <GL/glew.h>
 
 #include <GLFW/glfw3.h>
@@ -135,3 +131,4 @@ GLuint loadDDS(const char* imagePath)
      return createDDSTexture(format, buffer, mipMapCount, width, height);
 
 }
+
