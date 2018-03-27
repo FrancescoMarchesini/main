@@ -93,7 +93,10 @@ void Quad::draw()
     glBindVertexArray(vao);
     //esendo che non disegno i vertici ma gli indici uso la seguente funzione
     //glDrawArrays(GL_TRIANGLES, 0, 3);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    //glDisable(GL_BLEND);
 }
 
 void Quad::cleanQuad()
