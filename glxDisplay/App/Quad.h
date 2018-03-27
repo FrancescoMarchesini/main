@@ -31,9 +31,15 @@ public:
     void draw();
 
     /**
+     * @brief shader init della GLtexture
+     */
+    bool initTexture(const char* paths);
+
+    /**
      * @brief cleanQuad pulisci texture e shader se non servono
      */
     void cleanQuad();
+
 private:
     /**
      * @brief Quad costruttore
@@ -46,13 +52,21 @@ private:
      */
     bool init();
 
+    /**
+     * @brief initBuffers
+     * @return
+     */
+    bool initBuffers();
+
     Shader* shader;
     GLuint vbo;
     GLuint vao;
     GLuint ebo; //element buffer object ovvero un buffer per gli indici
+    GLuint tex;
+
     //La seguente stuttura dati sarà condivisa sa tutte le istanze della
     //classe
-    static const float vertices[12];
+    static const float vertices[32];
     static const GLint indici[6];
 };
 #endif
