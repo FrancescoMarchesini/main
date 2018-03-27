@@ -9,11 +9,11 @@ openGLText::~openGLText()
 
 openGLText::openGLText()
 {
-    textureID       = 0;
-    vertexBufferID  = 0;
-    UVBufferID      = 0;
+   // textureID       = 0;
+   // vertexBufferID  = 0;
+   // UVBufferID      = 0;
     shader          = NULL;
-    Uniform2DID     = 0;
+   // Uniform2DID     = 0;
 }
 
 openGLText* openGLText::create(const char *texturePath)
@@ -32,13 +32,8 @@ openGLText* openGLText::create(const char *texturePath)
 
 bool openGLText::init(const char *texturePath)
 {
-    printf("%sloadDDStexture\n", LOG_TEXT_INFO);
     textureID = loadDDS(texturePath);
-
-    //Initiliazzo il vertex buffer object
-    glGenBuffers(1, &vertexBufferID);
-    //inizializzo il buffer per le coordinate UV ::??
-    glGenBuffers(1, &UVBufferID);
+    printf("%sCaricato image.DDS e creato la texture\n", LOG_TEXT_INFO);
 
     //inizializzo gli shader
     shader = Shader::create("./data/shader/text2d.vertexshader", "./data/shader/text2d.fragmentshader" );
@@ -47,10 +42,15 @@ bool openGLText::init(const char *texturePath)
         printf("%sfallito caricare gli shader\n", LOG_TEXT_ERRORE);
         return NULL;
     }
-    //qui devrei inizializzare lo shader
-    //Text2DUniformID = glGetUniformLocation( Text2DShaderID, "myTextureSampler" );
-    //ma essendo che c'è la classe lo posso fare prima del draw dell'oggetto
-    //vedi ***  in printText
+    printf("%sCaricato gli shader\n", LOG_TEXT_INFO);
+
+    Uniform2DID = glGetUniformLocation(shader->getID(), "myTextureSampler" );
+
+    //Initiliazzo il vertex buffer object
+    glGenBuffers(1, &vertexBufferID);
+    //inizializzo il buffer per le coordinate UV
+    glGenBuffers(1, &UVBufferID);
+
     return true;
 }
 
@@ -70,8 +70,14 @@ bool openGLText::drawTexture(const std::vector<vec2> &vertices, const std::vecto
     printf("%sCarico e utilizzo lo shader\n", LOG_TEXT_INFO);
     //utilizzo lo shader
     shader->use();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    glUniform1i(Uniform2DID, 0);
+
     //*** qui il fatto desscritto nel costruttore
-    shader->setInt("myTextureSampler", 1);
+    //shader->setInt("myTextureSampler", 0);
     //altrimenti glUniform1i(glGetUniformLocation(ourShader.ID, "myTextureSampler"), 0);
 
     printf("%sSetto gli attributi dei vertici\n", LOG_TEXT_INFO);
@@ -159,7 +165,43 @@ void openGLText::printText(const char *text, int x, int y, int size)
 
     }
 
-    drawTexture(vertici, UVs);
+   // drawTexture(vertici, UVs);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+    glBufferData(GL_ARRAY_BUFFER, vertici.size() * sizeof(glm::vec2), &vertici[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
+    glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
+    printf("%sUpload dati da host to Device\n", LOG_TEXT_INFO);
+
+    shader->use();
+    printf("%sAttivato lo shader\n", LOG_TEXT_INFO);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glUniform1i(Uniform2DID, 0);
+    printf("%sBind della texture\n", LOG_TEXT_INFO);
+
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    printf("%sSettato la struttura dati del buffer ed attivato gli attrib pos\n", LOG_TEXT_INFO);
+
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    printf("%sSettato la struttura dati del buffer ed attivato gli attrib pos\n", LOG_TEXT_INFO);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    printf("%sAttivato funzioni gl per bland\n", LOG_TEXT_INFO);
+
+    glDrawArrays(GL_TRIANGLES, 0, vertici.size());
+    printf("%sDisegno\n", LOG_TEXT_INFO);
+
+    glDisable(GL_BLEND);
+
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    printf("%sCancellato il buffer\n", LOG_TEXT_INFO);
 
 }
 

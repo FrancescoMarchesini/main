@@ -13,7 +13,7 @@ using namespace glm;
 #include "../common/shader.h"
 #include "../common/loadImageOnTexture.h"
 
-#define LOG_TEXT_INFO       "[LOG_TEXT] [INFO]   "
+#define LOG_TEXT_INFO       "[LOG_TEXT] [INFO] "
 #define LOG_TEXT_ERRORE     "[LOG_TEXT] [ERRORE] "
 
 

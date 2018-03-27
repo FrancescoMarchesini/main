@@ -19,6 +19,7 @@ GLuint createDDSTexture(unsigned int format, unsigned char* buffer, unsigned int
     // @param int numero di texture che si vogliono creare
      // @param texture un array di unsigned int nel quale memorizzare la texture stessa
     glGenTextures(1, &textureID);
+
     //bind della texture
     glBindTexture(GL_TEXTURE_2D, textureID);
     //determino come i pixel vengano caricati nel buffer GPU iniziare ogni pixel come colonne(row)
@@ -27,16 +28,15 @@ GLuint createDDSTexture(unsigned int format, unsigned char* buffer, unsigned int
 
     //determino la block size in base al formato dell'immagine caricata
     unsigned int blocksize = (format ==  GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
-    printf("[LOG_IMAGE ] block size = %d \n", blocksize);
+    printf("[LOG_IMAGE] in base al foramto il  block size = %d \n", blocksize);
     unsigned int offset = 0;
 
     //carico le mimmaps iterando in tutti i livelli delle mipMap per la loro grandezza
     for(unsigned int level = 0; level  < mipMapCount && (width || height); ++level)
     {
         unsigned int size = ((width+3)/4) * ((height+3)/4) * blocksize;
-        printf("[LOG_IMAGE ] H=%d W=%d size=%d\n", width, height, size);
+        //printf("[LOG_IMAGE ] H=%d W=%d size=%d\n  format =%d ", width, height, size, format);
         //genero la texture dall'immagine compressa dds
-        printf("[LOG_IMAGE ] format =%d \n", format);
         glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 0, size, buffer + offset);
 
         //alloco un array di pixel uno dopo l'altro quindi swifto della size ogni volta
@@ -44,6 +44,7 @@ GLuint createDDSTexture(unsigned int format, unsigned char* buffer, unsigned int
         //la grandezza ad ogni mipmap viene dimezzata
         width /= 2;
         height /= 2;
+
         //quando arrivo all'ultima mipmap tengo la w e h ad 1
         if(width < 1 ) width = 1;
         if(height < 1 ) height = 1;
@@ -58,7 +59,7 @@ GLuint createDDSTexture(unsigned int format, unsigned char* buffer, unsigned int
 
 GLuint loadDDS(const char* imagePath)
 {
-    printf("[LOG_IMAGE ] carico  texture per i Font\n");
+    printf("[LOG_IMAGE] carico texture per i Font\n");
 
     unsigned char header[124];
 
@@ -76,7 +77,7 @@ GLuint loadDDS(const char* imagePath)
    //se i caratteri corrispondono passa al successivo
    if (strncmp(filecode, "DDS ", 4) != 0) {
         fclose(fp);
-        printf("[LOG_IMAGE ] file NON corretto chiudo ed esco\n");
+        printf("[LOG_IMAGE] file NON corretto chiudo ed esco\n");
         return 0;
     }
 
@@ -90,7 +91,7 @@ GLuint loadDDS(const char* imagePath)
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC = *(unsigned int*)&(header[80]);
 
-    printf("[LOG_IMAGE ] height = %d width = %d \n[LOG_IMAGE ] linearSize = %d mipMapCount = % d fourCC = %d \n", height,  width, linearSize, mipMapCount, fourCC);
+    printf("[LOG_IMAGE] height = %d width = %d \n[LOG_IMAGE] linearSize = %d mipMapCount = % d fourCC = %d \n", height,  width, linearSize, mipMapCount, fourCC);
 
     unsigned char * buffer;
     unsigned int bufsize;
@@ -101,11 +102,11 @@ GLuint loadDDS(const char* imagePath)
     //    mipMap = 128×128 pixels, 64×64, 32×32, 16×16, 8×8, 4×4, 2×2, 1×1
     bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
     buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
-    printf("[LOG_IMAGE ] buffersize = %d\n", bufsize);
+    printf("[LOG_IMAGE] buffersize = %d\n", bufsize);
     fread(buffer, 1, bufsize, fp);
 
     fclose(fp);
-    printf("[LOG_IMAGE ] caricato file in ram, lo chiudo\n");
+    printf("[LOG_IMAGE] caricato file in ram, lo chiudo\n");
 
     //Converto i flag FourCC in un formato comprensibile da openGL
     //il FOURCC è il formato dei pixel per il file DDS
@@ -127,7 +128,6 @@ GLuint loadDDS(const char* imagePath)
             return 0;
         }
 
-     printf("[LOG_IMAGE ] format = %d \n", format);
      return createDDSTexture(format, buffer, mipMapCount, width, height);
 
 }
