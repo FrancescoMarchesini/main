@@ -131,4 +131,3 @@ GLuint loadDDS(const char* imagePath)
      return createDDSTexture(format, buffer, mipMapCount, width, height);
 
 }
-

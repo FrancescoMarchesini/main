@@ -127,18 +127,18 @@ void openGLText::printText(const char *text, int x, int y, int size)
         vertici.push_back(vertice_basso_destra);
         vertici.push_back(vertice_alto_destra);
         vertici.push_back(vertice_basso_sinistra);
-        printf("%sAbbiamo il quadrato numero = %d\n", LOG_TEXT_INFO, i);
+        //printf("%sAbbiamo il quadrato numero = %d\n", LOG_TEXT_INFO, i);
 
         //calcolo delle cordinate UV per ogni lettera
         char character = text[i];
-        printf("%smappo in UV la lettera = %d\n", LOG_TEXT_INFO, text[i]);
+       // printf("%smappo in UV la lettera = %d\n", LOG_TEXT_INFO, text[i]);
         //character è la rabbresentazione in asci delle lettere A = 65 .. Z = 58
         //tramite il modulo di 16 la A concide con 1 la B con 2 e cosi via sia per la x che y
         //divido per 16 in modo da mappare le cordinate tra [0.0-1.0]
         //in tal modo a partire dalla texture o la posizione dei caratteri ??
         float uv_x = (character%16)/16.0f;
         float uv_y = (character/16)/16.0f;
-        printf("%suv_x = %.3f X uv_y = %.3f\n", LOG_TEXT_INFO, uv_x, uv_y);
+       // printf("%suv_x = %.3f X uv_y = %.3f\n", LOG_TEXT_INFO, uv_x, uv_y);
 
         //calcolo il triangolo alto a destra nelle cordinate UV
         glm::vec2 uv_alto_sinistra = glm::vec2(uv_x             , uv_y);
@@ -155,7 +155,7 @@ void openGLText::printText(const char *text, int x, int y, int size)
         UVs.push_back(uv_basso_destra);
         UVs.push_back(uv_alto_destra);
         UVs.push_back(uv_basso_sinistra);
-        printf("%sAbbiamo il quadrato Nelle cordinate UV  = %d\n", LOG_TEXT_INFO, i);
+       // printf("%sAbbiamo il quadrato Nelle cordinate UV  = %d\n", LOG_TEXT_INFO, i);
 
     }
 
@@ -171,3 +171,4 @@ void openGLText::cleanupText2D()
     glDeleteTextures(1,&textureID);
     shader->deleteShader();
 }
+

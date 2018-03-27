@@ -77,26 +77,26 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
     }
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
-    printf("%sShader caricati correttamente\n", LOG_SHADER);
+    printf("%sShader File caricati correttamente\n", LOG_SHADER);
 
-    printf("%sLinko gli Shader\n", LOG_SHADER);
+    printf("%sCompilo gli Shader:\n", LOG_SHADER);
     unsigned int vertex, fragment;
     int succes;
     char infoLog[512];
 
-    printf("%sIniziamo con il Vertex Shader :)\n", LOG_SHADER);
+    printf("%s1 Vertex Shader\n", LOG_SHADER);
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
     checkCompileErrors(vertex, "VERTEX");
 
-    printf("%sConinuiamo con il Fragment Shader\n", LOG_SHADER);
+    printf("%s2 Fragment Shader\n", LOG_SHADER);
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fShaderCode, NULL);
     glCompileShader(fragment);
     checkCompileErrors(vertex, "FRAGMENT");
 
-     printf("%sFiniamo con il geometry Shader se presente\n", LOG_SHADER);
+     printf("%s3 geometry Shader?\n", LOG_SHADER);
      unsigned int geometry;
      if(geomtryPath != NULL)
      {
@@ -108,10 +108,10 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
      }
      else
      {
-         printf("%s No il geometry non è presetne :( \n", LOG_SHADER);
+         printf("%sNo non presente\n", LOG_SHADER);
      }
 
-     printf("%sAttiviamo gli shader \n", LOG_SHADER);
+     printf("%sAttiviamo gli shader\n", LOG_SHADER);
      ID = glCreateProgram();
      glAttachShader(ID, vertex);
      glAttachShader(ID, fragment);
@@ -120,7 +120,9 @@ bool Shader::init(const char *vertexPath, const char *fragmentPath, const char *
      glLinkProgram(ID);
      checkCompileErrors(ID, "PROGRAM");
 
-     printf("%sPulisco gli shader che una volta linkati non sono piu necessari\n", LOG_SHADER);
+     printf("%sCancello gli shader che una volta linkati non sono piu necessari\n", LOG_SHADER);
+
+
      glDeleteShader(vertex);
      glDeleteShader(fragment);
      if(geomtryPath != nullptr)
@@ -213,3 +215,5 @@ void Shader::deleteShader()
 {
     glDeleteProgram(ID);
 }
+
+

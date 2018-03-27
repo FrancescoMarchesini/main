@@ -1,16 +1,11 @@
 #version 330 core
 
-//interpollo i valori dal vertex shader
-in vec2 UV;
+//l'outoput del vertexcolor è interpolato su tutti
+//i pixel dello schermo coporti dalle primitive
 
-//out data
-out vec4 color;
-
-//i valori stanno costanti per tutta  la mesh
-uniform sampler2D myTextureSampler;
+out vec4 fragColor;
 
 void main()
 {
-    //color = texture2D(myTextureSampler, UV).rgb;
-    color = texture(myTextureSampler, UV);
+    fragColor = vec4(1.0, 0.0, 1.0, 1.0);
 }
