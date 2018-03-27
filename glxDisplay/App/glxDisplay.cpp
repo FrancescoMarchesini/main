@@ -90,6 +90,9 @@ bool glxDisplay::initGL()
     //funzione callback per ottenere lo stream input
     glfwSetCharCallback(mWindow, character_callback);
 
+    //funzione call back per caricare file tramite trascinamento
+    glfwSetDropCallback(mWindow, glxDisplay::drop_callback);
+
     //NOTARE LA DOPPIA CHIMATA DELLA FUNZIONE NON SO SE PUO DARE PROBLEMI
     //UNA CHIAMATA E PER IL MOUSE L'ALTRA PER LA TASTIRA
     glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -159,7 +162,7 @@ void glxDisplay::draw()
     {
 
         //pulisci lo schermo ad ogni loop
-        glClearColor(0.f, 0.f, 0.0f, 0.0f);
+        glClearColor(0.f, 0.f, 1.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -168,9 +171,15 @@ void glxDisplay::draw()
         //////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////
-        char text[256];
-        sprintf(text,"Bella li inziamo a ragionare\nBella li inziamo a ragionare");
-        myText->printText(text, 0, 500, 10);
+        //char text[256];
+        //sprintf(text,"Bella li inziamo a ragionare\nBella li inziamo a ragionare");
+        //for(int i = 0 ; i< 20; i++){
+        //    myText->printText(text, 0, 524-(i*30), 30);
+        //}
+        //////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////
+        //loadImageOnTexture();
         //////////////////////////////////////////////////////////////
 
         //swap del buffer
@@ -184,7 +193,7 @@ void glxDisplay::draw()
 
     quad->cleanQuad();
 
-    myText->cleanupText2D();
+    //myText->cleanupText2D();
 
     glfwTerminate();
 }
@@ -307,4 +316,14 @@ void glxDisplay::key_callback(GLFWwindow *window, int key, int scancode, int act
              break;
         }
     }
+}
+
+void glxDisplay::drop_callback(GLFWwindow* window, int count, const char** paths)
+{
+    int i;
+        for (i = 0;  i < count;  i++)
+        {
+          printf("%s Caricato file %s\n", LOG_GLFW, paths[i]);
+          //quad->initTexture(paths[i]);
+        }
 }

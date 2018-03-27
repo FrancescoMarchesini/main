@@ -118,6 +118,13 @@ private:
      */
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+    /**
+     * @brief drop_callback callback per caricare file, path trascinandolo nella finestra
+     * @param window
+     * @param count
+     * @param paths
+     */
+    static void drop_callback(GLFWwindow* window, int count, const char** paths);
 
     //oggetto finistra
     GLFWwindow* mWindow;
