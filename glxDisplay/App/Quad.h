@@ -49,8 +49,10 @@ private:
     Shader* shader;
     GLuint vbo;
     GLuint vao;
+    GLuint ebo; //element buffer object ovvero un buffer per gli indici
     //La seguente stuttura dati sarà condivisa sa tutte le istanze della
     //classe
-    static const float vertices[9];
+    static const float vertices[12];
+    static const GLint indici[6];
 };
 #endif
