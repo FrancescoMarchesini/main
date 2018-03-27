@@ -9,3 +9,4 @@ void main()
     //gl_Position fa da output dello shder
     gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }
+
