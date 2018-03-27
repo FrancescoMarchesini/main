@@ -60,6 +60,14 @@ bool glxDisplay::initGL()
 
     //init glew
     glfwMakeContextCurrent(mWindow);
+    glewExperimental = GL_TRUE;
+    if(glewInit() != GLEW_OK)
+    {
+        printf("%s ERRORE initializzazione glew \n", LOG_GLFW);
+        glfwTerminate();
+        return -1;
+    }
+    printf("%s Inizializzato GLFW e GLEW\n", LOG_GLFW);
 
     //init cursore costum
     GLFWcursor* cursor = initCostumCursor();
@@ -84,31 +92,19 @@ bool glxDisplay::initGL()
 
     //NOTARE LA DOPPIA CHIMATA DELLA FUNZIONE NON SO SE PUO DARE PROBLEMI
     //UNA CHIAMATA E PER IL MOUSE L'ALTRA PER LA TASTIRA
-    /**
-     * @brief glfwSetInputMode listener sugli eventi
-     * args 1 : finesrtra nella quale stare in ascoloto
-     * args 2 : Cosa ascoltare in questo il mouse
-     * args 3 : come ascolotare
-     */
-    //glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetInputMode(mWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
+    printf("%s Initializzato Tutte le funzione CallBack per Input e Varie\n", LOG_GLFW);
 
-    /**
-     * @brief glfwSetInputMode listener sugli eventi
-     * args 1 : finesrtra nella quale stare in ascoloto
-     * args 2 : Cosa ascoltare in questo caso i tasti premuti
-     * args 3 : alla premitura di un tasto il valore di ritorno è GLFW_PRESS
-     */
-    //glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GL_TRUE);
-
-    //glfwSetInputMode(mWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
-    /////////////////////////////////////////////////////////////
-
-    glewExperimental = GL_TRUE;
-    if(glewInit() != GLEW_OK)
-    {
-        printf("%s ERRORE initializzazione glew \n", LOG_GLFW);
-        return -1;
-    }
+    // Dark blue background
+    //glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+    //glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_LESS);
+    //glEnable(GL_CULL_FACE);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    printf("%s Attivato le varie funzioni di openGL\n", LOG_GLFW);
 
     //////////////////////////////////////////////////////////////
     quad = Quad::create();
@@ -116,6 +112,14 @@ bool glxDisplay::initGL()
     {
         printf("%s Fallito a creare il quadrato \n", LOG_GLFW);
         return -1;
+    }
+    //////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////
+    myText =  openGLText::create( "./data/image/Holstein.DDS" );
+    if(!myText)
+    {
+       printf("%sfallito a crare l'instanza dell'oggetto testo.\n", LOG_GLFW_ERROR);
     }
     //////////////////////////////////////////////////////////////
     return true;
@@ -150,29 +154,23 @@ glxDisplay* glxDisplay::create()
 void glxDisplay::draw()
 {
 
-    //----------------------------------------------------------------------------------
-    //myText =  openGLText::create( "./data/image/Holstein.DDS" );
-    //if(!myText)
-    //{
-    //    printf("%sfallito a crare l'instanza dell'oggetto testo.\n", LOG_GLFW_ERROR);
-    //}
-
     //main loop per diseganre
     while(!glfwWindowShouldClose(mWindow))
     {
 
         //pulisci lo schermo ad ogni loop
         glClearColor(0.f, 0.f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //////////////////////////////////////////////////////////////
         quad->draw();
         //////////////////////////////////////////////////////////////
 
+        //////////////////////////////////////////////////////////////
         char text[256];
-        //sprintf(text,"Bella li inziamo a ragionare");
-       // printf("%s", text);
-       // myText->printText(text, 10, 10, 60);
+        sprintf(text,"Bella li inziamo a ragionare\nBella li inziamo a ragionare");
+        myText->printText(text, 0, 500, 10);
+        //////////////////////////////////////////////////////////////
 
         //swap del buffer
         glfwSwapBuffers(mWindow);
@@ -185,7 +183,7 @@ void glxDisplay::draw()
 
     quad->cleanQuad();
 
-    //myText->cleanupText2D();
+    myText->cleanupText2D();
 
     glfwTerminate();
 }
@@ -265,6 +263,7 @@ void glxDisplay::character_callback(GLFWwindow* window, unsigned int codepoint)
         length = 0;
 
     result[length] = '\0';
+
     printf("%s char string : %s \n", LOG_GLFW, result);
 }
 
