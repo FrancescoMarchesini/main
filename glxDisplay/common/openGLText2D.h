@@ -66,7 +66,7 @@ private:
      * @param uv_buffer vettore con le cordinate UV delle sinole lettere
      * @return
      */
-    bool drawTexture(const std::vector<glm::vec2> & vertices, const std::vector<glm::vec2> & uv_buffer);
+    bool drawTexture(const std::vector<glm::vec2> & vertici, const std::vector<glm::vec2> & UVs);
 
     //varibili della classe
     unsigned int textureID;       //id della texture

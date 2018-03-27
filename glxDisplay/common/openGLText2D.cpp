@@ -54,60 +54,50 @@ bool openGLText::init(const char *texturePath)
     return true;
 }
 
-bool openGLText::drawTexture(const std::vector<vec2> &vertices, const std::vector<vec2> &uv_buffer)
+bool openGLText::drawTexture(const std::vector<vec2> &vertici, const std::vector<vec2> &UVs)
 {
-    //bind vertex cordinate
-    //Bind del vertex buffer in modalità array: init nel buffer
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    //allocazione con la relativa grandezza del buffer
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec2), &vertices[0], GL_STATIC_DRAW);
-    //Bind uv cordiante
-    //Bind del vertex buffer in modalità array: init nel buffer
+    glBufferData(GL_ARRAY_BUFFER, vertici.size() * sizeof(glm::vec2), &vertici[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
-    //allocazione con la relativa grandezza del buffer
-    glBufferData(GL_ARRAY_BUFFER, uv_buffer.size() * sizeof(glm::vec2), &uv_buffer[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
+  //printf("%sUpload dati da host to Device\n", LOG_TEXT_INFO);
 
-    printf("%sCarico e utilizzo lo shader\n", LOG_TEXT_INFO);
-    //utilizzo lo shader
     shader->use();
+  //printf("%sAttivato lo shader\n", LOG_TEXT_INFO);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-
     glUniform1i(Uniform2DID, 0);
+  //printf("%sBind della texture\n", LOG_TEXT_INFO);
 
-    //*** qui il fatto desscritto nel costruttore
-    //shader->setInt("myTextureSampler", 0);
-    //altrimenti glUniform1i(glGetUniformLocation(ourShader.ID, "myTextureSampler"), 0);
-
-    printf("%sSetto gli attributi dei vertici\n", LOG_TEXT_INFO);
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+  //printf("%sSettato la struttura dati del buffer ed attivato gli attrib pos\n", LOG_TEXT_INFO);
 
-    printf("%sSetto gli attributi dei vertici UV\n", LOG_TEXT_INFO);
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+  //printf("%sSettato la struttura dati del buffer ed attivato gli attrib pos\n", LOG_TEXT_INFO);
 
-    printf("%sDefinisco i settagggi per disegnare\n", LOG_TEXT_INFO);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //printf("%sAttivato funzioni gl per bland\n", LOG_TEXT_INFO);
 
-    printf("%sFinalmente Disegno\n", LOG_TEXT_INFO);
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
+    glDrawArrays(GL_TRIANGLES, 0, vertici.size());
+  //printf("%sDisegno\n", LOG_TEXT_INFO);
 
     glDisable(GL_BLEND);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-
+  //printf("%sCancellato il buffer\n", LOG_TEXT_INFO);
 }
 
 void openGLText::printText(const char *text, int x, int y, int size)
 {
     unsigned int lenght = strlen(text);
-    printf("%slunghezza del testo :%d\n", LOG_TEXT_INFO, lenght);
+    //printf("%slunghezza del testo :%d\n", LOG_TEXT_INFO, lenght);
 
     //un quadrato di 4 vertici contenete la lettera, formato da due triangoli
     std::vector<glm::vec2> vertici;
@@ -165,43 +155,7 @@ void openGLText::printText(const char *text, int x, int y, int size)
 
     }
 
-   // drawTexture(vertici, UVs);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, vertici.size() * sizeof(glm::vec2), &vertici[0], GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
-    glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
-    printf("%sUpload dati da host to Device\n", LOG_TEXT_INFO);
-
-    shader->use();
-    printf("%sAttivato lo shader\n", LOG_TEXT_INFO);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glUniform1i(Uniform2DID, 0);
-    printf("%sBind della texture\n", LOG_TEXT_INFO);
-
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    printf("%sSettato la struttura dati del buffer ed attivato gli attrib pos\n", LOG_TEXT_INFO);
-
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    printf("%sSettato la struttura dati del buffer ed attivato gli attrib pos\n", LOG_TEXT_INFO);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    printf("%sAttivato funzioni gl per bland\n", LOG_TEXT_INFO);
-
-    glDrawArrays(GL_TRIANGLES, 0, vertici.size());
-    printf("%sDisegno\n", LOG_TEXT_INFO);
-
-    glDisable(GL_BLEND);
-
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    printf("%sCancellato il buffer\n", LOG_TEXT_INFO);
+    drawTexture(vertici, UVs);
 
 }
 
