@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 
 #include "../common/openGLText2D.h"
+#include "../App/Quad.h"
 
 #define LOG_GLFW         "[GLFW ]"
 #define LOG_GLFW_ERROR         "[GLFW] [ERRORE] "
@@ -126,6 +127,8 @@ private:
     int mHeight;
 
     openGLText * myText;
+    Quad* quad;
+
 };
 
 #endif

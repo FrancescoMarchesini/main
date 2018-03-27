@@ -1,11 +1,11 @@
 #include "glxDisplay.h"
 
-
 glxDisplay::glxDisplay()
 {
     mWindow = NULL;
     mWidth = 512;
     mHeight = 512;
+
 }
 
 glxDisplay::~glxDisplay()
@@ -47,6 +47,8 @@ void glxDisplay::framebuffer_size_callback(GLFWwindow *window, int width, int he
     //NON SO NEANCHE SE PUO' ESSERE UN PROBLEMA
     //mWidth = width;
     //mHeight = height;
+    //La funzione glViewport trasforma le Normalize Device Cordinate nelle cordinate screen-space
+    //questo poi passate al fragment shader
     glViewport(0, 0, width, height );
     printf("%s Resize viewport avvenuto %d X %d \n", LOG_GLFW, width, height);
 }
@@ -101,13 +103,21 @@ bool glxDisplay::initGL()
     //glfwSetInputMode(mWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
     /////////////////////////////////////////////////////////////
 
-    glewExperimental == true;
+    glewExperimental = GL_TRUE;
     if(glewInit() != GLEW_OK)
     {
         printf("%s ERRORE initializzazione glew \n", LOG_GLFW);
         return -1;
     }
 
+    //////////////////////////////////////////////////////////////
+    quad = Quad::create();
+    if(!quad)
+    {
+        printf("%s Fallito a creare il quadrato \n", LOG_GLFW);
+        return -1;
+    }
+    //////////////////////////////////////////////////////////////
     return true;
 }
 
@@ -140,23 +150,29 @@ glxDisplay* glxDisplay::create()
 void glxDisplay::draw()
 {
 
-    myText =  openGLText::create( "./data/image/Holstein.DDS" );
-    if(!myText)
-    {
-        printf("%sfallito a crare l'instanza dell'oggetto testo.\n", LOG_GLFW_ERROR);
-    }
+    //----------------------------------------------------------------------------------
+    //myText =  openGLText::create( "./data/image/Holstein.DDS" );
+    //if(!myText)
+    //{
+    //    printf("%sfallito a crare l'instanza dell'oggetto testo.\n", LOG_GLFW_ERROR);
+    //}
 
     //main loop per diseganre
     while(!glfwWindowShouldClose(mWindow))
     {
 
         //pulisci lo schermo ad ogni loop
-        glClearColor(0.f, 0.f, 0.4f, 0.f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.f, 0.f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        //////////////////////////////////////////////////////////////
+        quad->draw();
+        //////////////////////////////////////////////////////////////
 
         char text[256];
-        sprintf(text,"Bella li inziamo a ragionare");
-        myText->printText(text, 10, 10, 60);
+        //sprintf(text,"Bella li inziamo a ragionare");
+       // printf("%s", text);
+       // myText->printText(text, 10, 10, 60);
 
         //swap del buffer
         glfwSwapBuffers(mWindow);
@@ -166,7 +182,10 @@ void glxDisplay::draw()
         //aggiorna gli eventi nel mouse solo quando ci sono
         glfwWaitEvents();
     }
-    myText->cleanupText2D();
+
+    quad->cleanQuad();
+
+    //myText->cleanupText2D();
 
     glfwTerminate();
 }
