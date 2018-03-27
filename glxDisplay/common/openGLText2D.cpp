@@ -57,9 +57,9 @@ bool openGLText::init(const char *texturePath)
 bool openGLText::drawTexture(const std::vector<vec2> &vertici, const std::vector<vec2> &UVs)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, vertici.size() * sizeof(glm::vec2), &vertici[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertici.size() * sizeof(glm::vec2), &vertici[0], GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
-    glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs[0], GL_DYNAMIC_DRAW);
   //printf("%sUpload dati da host to Device\n", LOG_TEXT_INFO);
 
     shader->use();
@@ -67,6 +67,11 @@ bool openGLText::drawTexture(const std::vector<vec2> &vertici, const std::vector
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     glUniform1i(Uniform2DID, 0);
   //printf("%sBind della texture\n", LOG_TEXT_INFO);
 
