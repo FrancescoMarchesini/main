@@ -29,6 +29,7 @@ add_executable(${PROJECT_NAME}
         common/shader.cpp
         common/openGLText2D.cpp
         common/openGLText2D.h
+        common/stb_image.h
 )
 
 target_link_libraries(${PROJECT_NAME}
