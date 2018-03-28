@@ -93,8 +93,6 @@ bool glxDisplay::initGL()
     //funzione call back per caricare file tramite trascinamento
     glfwSetDropCallback(mWindow, glxDisplay::drop_callback);
 
-    //NOTARE LA DOPPIA CHIMATA DELLA FUNZIONE NON SO SE PUO DARE PROBLEMI
-    //UNA CHIAMATA E PER IL MOUSE L'ALTRA PER LA TASTIRA
     glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(mWindow, GLFW_STICKY_MOUSE_BUTTONS, 1);
@@ -102,11 +100,11 @@ bool glxDisplay::initGL()
 
     // Dark blue background
     //glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-    //glEnable(GL_DEPTH_TEST);
-    //glDepthFunc(GL_LESS);
-    //glEnable(GL_CULL_FACE);
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     printf("%s Attivato le varie funzioni di openGL\n", LOG_GLFW);
 
     //////////////////////////////////////////////////////////////
@@ -162,7 +160,7 @@ void glxDisplay::draw()
     {
 
         //pulisci lo schermo ad ogni loop
-        glClearColor(0.f, 0.f, 1.0f, 0.0f);
+        glClearColor(0.f, 0.f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -171,16 +169,13 @@ void glxDisplay::draw()
         //////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////
-        //char text[256];
-        //sprintf(text,"Bella li inziamo a ragionare\nBella li inziamo a ragionare");
-        //for(int i = 0 ; i< 20; i++){
-        //    myText->printText(text, 0, 524-(i*30), 30);
-        //}
+        char text[256];
+        sprintf(text,"Bella li inziamo a ragionare\nBella li inziamo a ragionare");
+          for(int i = 0 ; i< 20; i++){
+             myText->printText(text, 0, 524-(i*30), 30);
+        }
         //////////////////////////////////////////////////////////////
 
-        //////////////////////////////////////////////////////////////
-        //loadImageOnTexture();
-        //////////////////////////////////////////////////////////////
 
         //swap del buffer
         glfwSwapBuffers(mWindow);
@@ -193,7 +188,7 @@ void glxDisplay::draw()
 
     quad->cleanQuad();
 
-    //myText->cleanupText2D();
+    myText->cleanupText2D();
 
     glfwTerminate();
 }

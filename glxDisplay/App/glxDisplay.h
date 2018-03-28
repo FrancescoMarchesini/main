@@ -17,20 +17,20 @@
 class glxDisplay
 {
 public:
+    virtual ~glxDisplay();
+
     /**
      * @brief create funzione statica per creare l'instanza della classe
      * @return
      */
     static glxDisplay* create();
 
-    ~glxDisplay();
-
     /**
      * @brief draw funzione con main loop per disegnare
      */
     void draw();
 
-private:
+protected:
     glxDisplay();
 
     /**
@@ -126,6 +126,7 @@ private:
      */
     static void drop_callback(GLFWwindow* window, int count, const char** paths);
 
+protected:
     //oggetto finistra
     GLFWwindow* mWindow;
 
