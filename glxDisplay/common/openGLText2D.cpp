@@ -32,8 +32,15 @@ openGLText* openGLText::create(const char *texturePath)
 
 bool openGLText::init(const char *texturePath)
 {
+
     textureID = loadDDS(texturePath);
     printf("%sCaricato image.DDS e creato la texture\n", LOG_TEXT_INFO);
+
+    //Initiliazzo il vertex buffer object
+    glGenBuffers(1, &vertexBufferID);
+    //inizializzo il buffer per le coordinate UV
+    glGenBuffers(1, &UVBufferID);
+
 
     //inizializzo gli shader
     shader = Shader::create("./data/shader/text2d.vertexshader", "./data/shader/text2d.fragmentshader" );
@@ -45,11 +52,6 @@ bool openGLText::init(const char *texturePath)
     printf("%sCaricato gli shader\n", LOG_TEXT_INFO);
 
     Uniform2DID = glGetUniformLocation(shader->getID(), "myTextureSampler" );
-
-    //Initiliazzo il vertex buffer object
-    glGenBuffers(1, &vertexBufferID);
-    //inizializzo il buffer per le coordinate UV
-    glGenBuffers(1, &UVBufferID);
 
     return true;
 }
@@ -65,13 +67,6 @@ bool openGLText::drawTexture(const std::vector<vec2> &vertici, const std::vector
     shader->use();
   //printf("%sAttivato lo shader\n", LOG_TEXT_INFO);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
     glUniform1i(Uniform2DID, 0);
   //printf("%sBind della texture\n", LOG_TEXT_INFO);
 
@@ -84,6 +79,13 @@ bool openGLText::drawTexture(const std::vector<vec2> &vertici, const std::vector
     glBindBuffer(GL_ARRAY_BUFFER, UVBufferID);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
   //printf("%sSettato la struttura dati del buffer ed attivato gli attrib pos\n", LOG_TEXT_INFO);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
