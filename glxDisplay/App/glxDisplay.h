@@ -26,6 +26,16 @@ public:
     static glxDisplay* create();
 
     /**
+     * @brief setup degli oggetti opengl per la classe padre
+     */
+    virtual bool setup(){return 0;}
+
+    /**
+     * @brief loop per diseganre gli oggetti nel setup all'interno del main loop GLFW
+     */
+    virtual void loop(){}
+
+    /**
      * @brief draw funzione con main loop per disegnare
      */
     void draw();

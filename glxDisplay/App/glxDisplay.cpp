@@ -53,6 +53,7 @@ void glxDisplay::framebuffer_size_callback(GLFWwindow *window, int width, int he
     printf("%s Resize viewport avvenuto %d X %d \n", LOG_GLFW, width, height);
 }
 
+
 bool glxDisplay::initGL()
 {
     //gestiamo i possibili errori prima di tutto
@@ -108,6 +109,10 @@ bool glxDisplay::initGL()
     printf("%s Attivato le varie funzioni di openGL\n", LOG_GLFW);
 
     //////////////////////////////////////////////////////////////
+    setup();
+    /////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////
     quad = Quad::create();
     if(!quad)
     {
@@ -152,6 +157,8 @@ glxDisplay* glxDisplay::create()
 }
 
 
+
+
 void glxDisplay::draw()
 {
 
@@ -162,6 +169,10 @@ void glxDisplay::draw()
         //pulisci lo schermo ad ogni loop
         glClearColor(0.f, 0.f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        //////////////////////////////////////////////////////////////
+        loop();
+        //////////////////////////////////////////////////////////////
 
 
         //////////////////////////////////////////////////////////////
