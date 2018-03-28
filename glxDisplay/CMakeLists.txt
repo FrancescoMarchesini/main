@@ -15,6 +15,8 @@ include_directories(external/glfw-3.2.1/include/ external/glm-0.9.8/ data/shader
 
 add_executable(${PROJECT_NAME} 
 	App/main.cpp
+        App/App.h
+        App/App.cpp
 	App/glxDisplay.cpp
 	App/glxDisplay.h
         App/Quad.h
