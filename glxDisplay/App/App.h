@@ -1,25 +1,26 @@
-#ifndef _APP_H_
-#define _APP_H_
+#ifndef __APP_H_
+#define __APP_H_
+
 #include "glxDisplay.h"
 
-#define LOG_APP_INFO         "[APP] [INFO] "
-#define LOG_APP_ERROR        "[APP] [ERRORE] "
-
-class App : public glxDisplay
+#define LOG_APP_INFO          "[APP] [INFO] "
+#define LOG_APP_ERROR         "[APP] [ERRORE] "
+class App:public glxDisplay
 {
 public:
+    /**
+     * @brief ~App distruttore virtuale
+     */
+    virtual ~App();
 
-        static App* init();
+    /**
+     * @brief App costruttore
+     */
+    App(void);
 
-        virtual ~App();
-
-        bool setup();
-
-        void loop();
-
-protected:
-
-        App();
+    virtual void setup() override;
+    virtual void loop() override;
+    virtual void clean() override;
 };
 
 #endif

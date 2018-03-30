@@ -1,33 +1,26 @@
 #include "App.h"
 
+App::~App()
+{
+    printf("%sDistrutto classe figlio\n", LOG_APP_INFO);
+}
 
 App::App(void):glxDisplay()
 {
 
 }
 
-App::~App()
+void App::setup()
 {
-
-}
-
-App* App::init()
-{
-    App* app = new App();
-    if(!app)
-    {
-        printf("%sFalitto a creae L'app\n", LOG_APP_ERROR);
-        return NULL;
-    }
-    app->create();
-}
-
-bool App::setup()
-{
-    printf("%sSetup virtuale\n", LOG_APP_INFO);
+    printf("%ssetup classe dall App\n", LOG_APP_INFO);
 }
 
 void App::loop()
 {
-    printf("%sDraw virtuale\n", LOG_APP_INFO);
+    printf("%sloop classe dall App\n", LOG_APP_INFO);
+}
+
+void App::clean()
+{
+    printf("%sclean classe App\n", LOG_APP_INFO);
 }
