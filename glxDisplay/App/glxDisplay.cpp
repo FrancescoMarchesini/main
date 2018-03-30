@@ -6,12 +6,25 @@ glxDisplay::glxDisplay()
     mWidth = 512;
     mHeight = 512;
 
+    if( !initWindow())
+    {
+        printf("%s ERRORE fallito a creare finestra X11 \n", LOG_GLFW);
+
+    }
+
+    if( !initGL())
+    {
+        printf("%s ERRORE fallito OpenGL \n", LOG_GLFW);
+    }
+
+    printf("%s TOP tutto è OK \n", LOG_GLFW);
 }
 
 glxDisplay::~glxDisplay()
 {
     glfwTerminate();
     mWindow = NULL;
+     printf("%sDistrutto classe Padre\n", LOG_APP_INFO);
 }
 
 bool glxDisplay::initWindow()
@@ -108,29 +121,9 @@ bool glxDisplay::initGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     printf("%s Attivato le varie funzioni di openGL\n", LOG_GLFW);
 
-    //////////////////////////////////////////////////////////////
-    setup();
-    /////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////
-    quad = Quad::create();
-    if(!quad)
-    {
-        printf("%s Fallito a creare il quadrato \n", LOG_GLFW);
-        return -1;
-    }
-    //////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////
-    myText =  openGLText::create( "./data/image/Holstein.DDS" );
-    if(!myText)
-    {
-       printf("%sfallito a crare l'instanza dell'oggetto testo.\n", LOG_GLFW_ERROR);
-    }
-    //////////////////////////////////////////////////////////////
     return true;
 }
-
+/*
 glxDisplay* glxDisplay::create()
 {
     glxDisplay *vp = new glxDisplay();
@@ -155,52 +148,30 @@ glxDisplay* glxDisplay::create()
     printf("%s TOP tutto è OK \n", LOG_GLFW);
     return vp;
 }
-
-
-
-
-void glxDisplay::draw()
+*/
+void glxDisplay::draw(glxDisplay &display)
 {
+    //////////////////////////////////////////////////////////////
+    display.setup();
+    /////////////////////////////////////////////////////////////
 
-    //main loop per diseganre
     while(!glfwWindowShouldClose(mWindow))
     {
 
-        //pulisci lo schermo ad ogni loop
         glClearColor(0.f, 0.f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //////////////////////////////////////////////////////////////
-        loop();
+        display.loop();
         //////////////////////////////////////////////////////////////
 
-
-        //////////////////////////////////////////////////////////////
-        quad->draw();
-        //////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////
-        char text[256];
-        sprintf(text,"Bella li inziamo a ragionare\nBella li inziamo a ragionare");
-          for(int i = 0 ; i< 20; i++){
-             myText->printText(text, 0, 524-(i*30), 30);
-        }
-        //////////////////////////////////////////////////////////////
-
-
-        //swap del buffer
         glfwSwapBuffers(mWindow);
-
-        // sempre in ascolto degli eventi
-        //glfwPollEvents();
-        //aggiorna gli eventi nel mouse solo quando ci sono
         glfwWaitEvents();
     }
 
-    quad->cleanQuad();
-
-    myText->cleanupText2D();
-
+    //////////////////////////////////////////////////////////////
+    display.clean();
+    //////////////////////////////////////////////////////////////
     glfwTerminate();
 }
 

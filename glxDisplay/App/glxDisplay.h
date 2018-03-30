@@ -9,39 +9,43 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "../common/openGLText2D.h"
-#include "../App/Quad.h"
 
-#define LOG_GLFW         "[GLFW ]"
+#define LOG_GLFW               "[GLFW] [INFO] "
 #define LOG_GLFW_ERROR         "[GLFW] [ERRORE] "
 class glxDisplay
 {
 public:
+    /**
+     * @brief ~glxDisplay virtuale in modo da cancellare tutto dalla classe derivata
+     */
     virtual ~glxDisplay();
 
     /**
-     * @brief create funzione statica per creare l'instanza della classe
-     * @return
+     * @brief glxDisplay costruttore
      */
-    static glxDisplay* create();
+    glxDisplay();
 
     /**
      * @brief setup degli oggetti opengl per la classe padre
      */
-    virtual bool setup(){return 0;}
+    virtual void setup() {printf("%ssetup classe base\n", LOG_GLFW);}
 
     /**
      * @brief loop per diseganre gli oggetti nel setup all'interno del main loop GLFW
      */
-    virtual void loop(){}
+    virtual void loop() {printf("%sloop classe base\n", LOG_GLFW);}
+
+    /**
+     * @brief loop per pulire openGL
+     */
+     virtual void clean(){printf("%sclean classe base\n", LOG_GLFW);}
 
     /**
      * @brief draw funzione con main loop per disegnare
      */
-    void draw();
+    void draw(glxDisplay &display);
 
 protected:
-    glxDisplay();
 
     /**
      * @brief initWindow init della finestra glfw
@@ -60,10 +64,6 @@ protected:
      * @return il cursore creato
      */
     GLFWcursor* initCostumCursor();
-
-    ///NOTA CHE QUESTE FUNZIONI SONO STATICHE PERCHE QUANDO VENGONO CHIAMATE DALLE
-    ///FUNZIONI CALL BACK DI GLFW SE NON STATICHE NON COMPILA E DA IL SEGUENTE ERRORE :
-    ///"invalid use of non-static member function"
 
     /**
      * @brief error_callback funzione per maneggiare gli errori, spero di no
@@ -143,9 +143,6 @@ protected:
     //variabile per la finestra
     int mWidth;
     int mHeight;
-
-    openGLText * myText;
-    Quad* quad;
 
 };
 
