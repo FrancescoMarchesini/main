@@ -17,16 +17,16 @@ add_executable(${PROJECT_NAME}
 	App/main.cpp
         App/App.h
         App/App.cpp
-        common/glxDisplay.cpp
-        common/glxDisplay.h
-        common/Quad.h
-        common/Quad.cpp
-        common/loadImageOnTexture.h
-        common/loadImageOnTexture.cpp
-        common/shader.h
-        common/shader.cpp
-        common/openGLText2D.cpp
-        common/openGLText2D.h
+        common/glfwDisplay/glxDisplay.cpp
+        common/glfwDisplay/glxDisplay.h
+        common/openGL/Quad.h
+        common/openGL/Quad.cpp
+        common/openGL/loadImageOnTexture.h
+        common/openGL/loadImageOnTexture.cpp
+        common/openGL/shader.h
+        common/openGL/shader.cpp
+        common/openGL/openGLText2D.cpp
+        common/openGL/openGLText2D.h
         common/stb_image.h
         data/shader/text2d.vertexshader
         data/shader/text2d.fragmentshader
