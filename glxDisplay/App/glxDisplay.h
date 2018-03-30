@@ -45,6 +45,20 @@ public:
      */
     void draw(glxDisplay &display);
 
+    virtual void mouse_callback(double xpos, double ypos){}
+
+    virtual void scroll_callback(double xoffset, double yoffset){}
+
+    virtual void cursor_enter_call_back(int entered){}
+
+    virtual void mouse_button_callback(int button, int action, int mods){}
+
+    virtual void character_callback(unsigned int codepoint){}
+
+    virtual void key_callback(int key, int scancode, int action, int mods){}
+
+    virtual void drop_callback(int count, const char** paths){}
+
 protected:
 
     /**
@@ -64,6 +78,8 @@ protected:
      * @return il cursore creato
      */
     GLFWcursor* initCostumCursor();
+
+private:
 
     /**
      * @brief error_callback funzione per maneggiare gli errori, spero di no
