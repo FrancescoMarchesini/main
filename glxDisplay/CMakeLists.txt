@@ -17,14 +17,10 @@ add_executable(${PROJECT_NAME}
 	App/main.cpp
         App/App.h
         App/App.cpp
-	App/glxDisplay.cpp
-	App/glxDisplay.h
-        App/Quad.h
-        App/Quad.cpp
-        data/shader/text2d.vertexshader
-	data/shader/text2d.fragmentshader
-        data/shader/quad.vertexshader
-        data/shader/quad.fragmentshader
+        common/glxDisplay.cpp
+        common/glxDisplay.h
+        common/Quad.h
+        common/Quad.cpp
         common/loadImageOnTexture.h
         common/loadImageOnTexture.cpp
         common/shader.h
@@ -32,6 +28,11 @@ add_executable(${PROJECT_NAME}
         common/openGLText2D.cpp
         common/openGLText2D.h
         common/stb_image.h
+        data/shader/text2d.vertexshader
+        data/shader/text2d.fragmentshader
+        data/shader/quad.vertexshader
+        data/shader/quad.fragmentshader
+
 )
 
 target_link_libraries(${PROJECT_NAME}
