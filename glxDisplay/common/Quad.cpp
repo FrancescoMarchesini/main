@@ -149,6 +149,7 @@ bool Quad::init()
 void Quad::draw()
 {
 
+    printf("ok");
     if(tex)
         glBindTexture(GL_TEXTURE_2D, tex);
 

@@ -13,16 +13,21 @@ App::App(void):glxDisplay()
 void App::setup()
 {
     printf("%ssetup classe dall App\n", LOG_APP_INFO);
+    quad = Quad::create();
+    if(!quad)
+        printf("fallito a creare il quad\n");
 }
 
 void App::loop()
 {
     printf("%sloop classe dall App\n", LOG_APP_INFO);
+    quad->draw();
 }
 
 void App::clean()
 {
     printf("%sclean classe App\n", LOG_APP_INFO);
+    quad->cleanQuad();
 }
 
 //--------------------------------------------------------------

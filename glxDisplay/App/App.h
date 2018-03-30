@@ -1,7 +1,8 @@
 #ifndef __APP_H_
 #define __APP_H_
 
-#include "glxDisplay.h"
+#include "../common/glxDisplay.h"
+#include "../common/Quad.h"
 
 #define LOG_APP_INFO          "[APP] [INFO] "
 #define LOG_APP_ERROR         "[APP] [ERRORE] "
@@ -85,6 +86,9 @@ public:
      * @param paths
      */
     virtual void drop_callback(int count, const char** paths);
+
+private:
+    Quad* quad;
 };
 
 #endif

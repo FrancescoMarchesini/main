@@ -95,39 +95,14 @@ bool glxDisplay::initGL()
     //glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_CULL_FACE);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     printf("%s Attivato le varie funzioni di openGL\n", LOG_GLFW);
 
     return true;
 }
-/*
-glxDisplay* glxDisplay::create()
-{
-    glxDisplay *vp = new glxDisplay();
 
-    if( !vp )
-           return NULL;
-
-    if( !vp->initWindow())
-    {
-        printf("%s ERRORE fallito a creare finestra X11 \n", LOG_GLFW);
-        delete vp;
-        return NULL;
-    }
-
-    if( !vp->initGL())
-    {
-        printf("%s ERRORE fallito OpenGL \n", LOG_GLFW);
-        delete vp;
-        return NULL;
-    }
-
-    printf("%s TOP tutto è OK \n", LOG_GLFW);
-    return vp;
-}
-*/
 void glxDisplay::draw(glxDisplay &display)
 {
     //////////////////////////////////////////////////////////////
@@ -151,6 +126,7 @@ void glxDisplay::draw(glxDisplay &display)
     //////////////////////////////////////////////////////////////
     display.clean();
     //////////////////////////////////////////////////////////////
+
     glfwTerminate();
 }
 

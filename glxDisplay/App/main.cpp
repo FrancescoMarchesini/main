@@ -1,4 +1,3 @@
-#include <iostream>
 #include "App.h"
 
 int main(int argv, char*argc[])
