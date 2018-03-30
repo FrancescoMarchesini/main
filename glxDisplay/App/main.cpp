@@ -1,20 +1,11 @@
-#include "App.h"
 #include <iostream>
+#include "App.h"
 
 int main(int argv, char*argc[])
 {
-
-    App * my = App::init();
-    if(!my->setup())
-    {
-        printf("[LOG_MAIN]ok tutte le tue funzioni gl sono ok");
-    }
-
-    my->loop();
-
-    my->draw();
-
-    delete my;
+    App app;
+    glxDisplay *display = &app;
+    display->draw(app);
 
     return 0;
 }
