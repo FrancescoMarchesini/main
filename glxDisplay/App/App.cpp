@@ -13,21 +13,25 @@ App::App(void):glxDisplay()
 void App::setup()
 {
     printf("%ssetup classe dall App\n", LOG_APP_INFO);
+    //text = openGLText::create("./data/image/Holstein.DDS");
     quad = Quad::create();
-    if(!quad)
-        printf("fallito a creare il quad\n");
 }
 
 void App::loop()
 {
-    printf("%sloop classe dall App\n", LOG_APP_INFO);
     quad->draw();
+
+    printf("%sloop classe dall App\n", LOG_APP_INFO);
+    char str[255];
+    sprintf(str, "bella li");
+    //text->printText(str, 10, 500, 60);
 }
 
 void App::clean()
 {
     printf("%sclean classe App\n", LOG_APP_INFO);
-    quad->cleanQuad();
+    quad->cleanQuad();;
+    //text->cleanupText2D();
 }
 
 //--------------------------------------------------------------

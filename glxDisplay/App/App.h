@@ -1,8 +1,9 @@
 #ifndef __APP_H_
 #define __APP_H_
 
-#include "../common/glxDisplay.h"
-#include "../common/Quad.h"
+#include "../common/glfwDisplay/glxDisplay.h"
+#include "../common/openGL/Quad.h"
+#include "../common/openGL/openGLText2D.h"
 
 #define LOG_APP_INFO          "[APP] [INFO] "
 #define LOG_APP_ERROR         "[APP] [ERRORE] "
@@ -89,6 +90,8 @@ public:
 
 private:
     Quad* quad;
+    openGLText* text;
+
 };
 
 #endif
