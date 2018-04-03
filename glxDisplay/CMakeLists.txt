@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 #aggiungo cartellaper lib esterne
 add_subdirectory (external)
 
-include_directories(/usr/include/glib-2.0 /usr/include/libxml2 /usr/lib/aarch64-linux-gnu/glib-2.0/include/)
+include_directories(/usr/include/gstreamer-1.0 /usr/lib/aarch64-linux-gnu/gstreamer-1.0/include /usr/include/glib-2.0 /usr/include/libxml2 /usr/lib/aarch64-linux-gnu/glib-2.0/include/)
 include_directories(external/glfw-3.2.1/include/ external/glm-0.9.8/ data/shader/ common/)
 
 add_executable(${PROJECT_NAME} 
@@ -27,6 +27,8 @@ add_executable(${PROJECT_NAME}
         common/openGL/shader.cpp
         common/openGL/openGLText2D.cpp
         common/openGL/openGLText2D.h
+        common/Gstreamer/gstreamer.h
+        common/Gstreamer/gstreamer.cpp
         common/stb_image.h
         data/shader/text2d.vertexshader
         data/shader/text2d.fragmentshader
@@ -40,5 +42,7 @@ target_link_libraries(${PROJECT_NAME}
 		GL
 		GLEW
                 glfw
+                gstreamer-1.0
+                gstapp-1.0
 )
 
