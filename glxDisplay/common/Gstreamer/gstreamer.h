@@ -10,7 +10,7 @@
 
 class GStreamer
 {
-
+public:
     ~GStreamer();
 
     /**
