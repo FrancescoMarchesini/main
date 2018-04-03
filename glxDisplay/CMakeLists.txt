@@ -44,5 +44,7 @@ target_link_libraries(${PROJECT_NAME}
                 glfw
                 gstreamer-1.0
                 gstapp-1.0
+                glib-2.0
+                gobject-2.0
 )
 
